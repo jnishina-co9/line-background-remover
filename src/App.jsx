@@ -105,7 +105,7 @@ export default function App() {
             </p>
           </div>
           <div className="hero-section__demo">
-            <img src="/video-junko.gif" alt="背景削除 of デモ動画" className="hero-section__img" />
+            <img src={`${import.meta.env.BASE_URL}video-junko.gif`} alt="背景削除 of デモ動画" className="hero-section__img" />
           </div>
         </div>
 
