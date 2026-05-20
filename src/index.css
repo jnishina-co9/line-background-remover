@@ -1,0 +1,630 @@
+/* ==========================================================================
+   Design Tokens (DESIGN.md準拠)
+   ========================================================================== */
+:root {
+  --color-base:   #FFFFFF;
+  --color-main:   #1D3FBB;
+  --color-accent: #E9E9E9;
+
+  --font-base:   'Noto Sans JP', sans-serif;
+  --font-accent: 'Outfit', sans-serif;
+
+  --space-xs:  8px;
+  --space-sm:  16px;
+  --space-md:  24px;
+  --space-lg:  32px;
+  --space-xl:  48px;
+  --space-xxl: 64px;
+}
+
+/* ==========================================================================
+   Reset
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-base);
+  background-color: var(--color-base);
+  color: var(--color-main);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 48px 24px 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ==========================================================================
+   Header / Footer
+   ========================================================================== */
+.header {
+  /* body側で上部余白を管理するためpadding-topは不要 */
+}
+/* ヘッダーコンテナ：タイトルとサブタイトルをグループ化 */
+.header-section {
+    text-align: center;
+    margin-bottom: 48px; /* 下に続くカードやツールエリアとの広い余白 */
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* メインタイトルとサブタイトルの間の美しい余白 */
+}
+
+/* メインタイトル（英語表記） */
+h1 {
+    font-family: 'Outfit', 'Noto Sans JP', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0;
+    color: #1D3FBB; /* メインカラーの青 */
+    letter-spacing: 0.05em; /* 文字同士が詰まりすぎないよう少し間隔を空ける */
+}
+
+/* サブタイトル（日本語表記） */
+.subtitle {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 16px; /* メインタイトルのちょうど半分のサイズで控えめに */
+    font-weight: 700;
+    color: #1D3FBB; /* メインタイトルと完全に同色の青 */
+    letter-spacing: 0.1em; /* 日本語文字の間にゆったりとした隙間を持たせ上品に */
+}
+
+/* スマートフォン等の狭い画面（幅767px以下）向けの自動調整ルール */
+@media (max-width: 767px) {
+    .header-section {
+        margin-bottom: 32px; /* 画面幅に合わせて下部余白を少し狭める */
+    }
+
+    h1 {
+        font-size: 24px; /* 32pxから24pxへ縮小 */
+    }
+
+    .subtitle {
+        font-size: 14px; /* 16pxから14pxへ縮小 */
+    }
+}
+
+.footer {
+  padding: var(--space-md) 0;
+  text-align: center;
+  background-color: var(--color-base);
+  margin-top: auto;
+}
+
+.footer__copy {
+  font-family: var(--font-accent);
+  font-size: 14px;
+  color: var(--color-main);
+  letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   Layout
+   ========================================================================== */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 0 var(--space-xl);
+  flex: 1;
+  width: 100%;
+}
+
+.content-section {
+  margin-bottom: var(--space-xxl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.section__heading {
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  color: var(--color-main);
+  margin-bottom: var(--space-lg);
+}
+
+/* ==========================================================================
+   How-to Cards
+   ========================================================================== */
+.howto-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+}
+
+.howto-card {
+  background-color: var(--color-main);
+  padding: var(--space-lg) var(--space-md);
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.howto-card__num {
+  font-family: var(--font-accent);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-accent);
+  margin-bottom: var(--space-xs);
+  line-height: 1;
+}
+
+.howto-card__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-accent);
+  margin-bottom: var(--space-xs);
+}
+
+.howto-card__desc {
+  font-size: 14px;
+  color: var(--color-accent);
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   Tool Area
+   ========================================================================== */
+.tool-area {
+  background-color: var(--color-accent);
+  padding: var(--space-xl);
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* ==========================================================================
+   Step Title
+   ========================================================================== */
+.step-title {
+  font-family: var(--font-accent);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-main);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.step-title__icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.btn {
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  font-family: var(--font-base);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  display: block;
+  width: 100%;
+  padding: var(--space-md) var(--space-xl);
+  text-align: center;
+}
+
+.btn:hover { opacity: 0.9; }
+
+.btn--primary {
+  background-color: var(--color-base);
+  color: var(--color-main);
+}
+
+.btn--secondary {
+  background-color: var(--color-accent);
+  color: var(--color-main);
+}
+
+.btn--main {
+  background-color: var(--color-main);
+  color: var(--color-base);
+}
+
+.btn--base {
+  background-color: var(--color-base);
+  color: var(--color-main);
+}
+
+.btn-group {
+  display: flex;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+/* ==========================================================================
+   Upload View
+   ========================================================================== */
+.drop-zone {
+  background-color: var(--color-main);
+  color: var(--color-base);
+  padding: var(--space-xl) var(--space-md);
+  text-align: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
+.drop-zone:hover { opacity: 0.9; }
+.drop-zone--over { opacity: 0.7; }
+
+.drop-zone__icon {
+  color: var(--color-base);
+  width: 48px;
+  height: 48px;
+}
+
+.drop-zone__text {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-base);
+}
+
+.drop-zone__sub-text {
+  font-size: 14px;
+  color: var(--color-base);
+  opacity: 0.8;
+  margin-top: -8px;
+}
+
+/* 選択画像プレビューエリア（画像分割ツールに合わせる） */
+.selected-preview {
+  width: 100%;
+  margin-top: 24px;
+  margin-bottom: 16px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.selected-preview img {
+  max-width: 100%;
+  max-height: 320px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  background-color: #FFFFFF;
+  display: block;
+}
+
+/* ==========================================================================
+   Hero Section (Text & GIF)
+   ========================================================================== */
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xxl);
+  padding: 0 var(--space-lg);
+  margin-bottom: var(--space-xxl);
+}
+
+.hero-section__text {
+  flex: 1;
+}
+
+.hero-section__title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--color-main);
+  margin-bottom: var(--space-md);
+}
+
+.hero-section__desc {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--color-main);
+}
+
+.hero-section__demo {
+  flex: 1;
+  max-width: 400px;
+}
+
+.hero-section__img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   Processing View
+   ========================================================================== */
+.processing-view {
+  background-color: var(--color-main);
+  padding: var(--space-xxl) var(--space-md);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.processing-view__icon {
+  color: var(--color-accent);
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.processing-view__status {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.progress-bar-container {
+  width: 100%;
+  max-width: 400px;
+  height: 8px;
+  background-color: var(--color-accent);
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--color-base);
+  transition: width 0.3s ease;
+}
+
+.processing-view__guidance {
+  font-size: 14px;
+  color: var(--color-accent);
+}
+
+/* ==========================================================================
+   Result View
+   ========================================================================== */
+.result-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+}
+
+.disclaimer {
+  font-size: 13px;
+  color: var(--color-main);
+  text-align: center;
+}
+
+/* ==========================================================================
+   Spec Note
+   ========================================================================== */
+.spec-note {
+  border: 2px solid var(--color-main);
+  background-color: var(--color-main);
+  padding: var(--space-sm);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.spec-note-title {
+  font-family: var(--font-accent);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--color-base);
+  margin-bottom: var(--space-xs);
+}
+
+.spec-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0;
+  margin: 0;
+}
+
+.spec-list li {
+  font-size: 16px;
+  color: var(--color-base);
+  padding-left: var(--space-md);
+  position: relative;
+}
+
+.spec-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  font-family: var(--font-accent);
+  font-size: 10px;
+  color: var(--color-base);
+  opacity: 0.5;
+}
+
+/* ==========================================================================
+   Status Empty State
+   ========================================================================== */
+.status-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: var(--space-xl) 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-main);
+  opacity: 0.5;
+}
+
+.result-preview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.preview-box {
+  background-color: var(--color-main);
+  padding: var(--space-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-box__title {
+  font-family: var(--font-accent);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-accent);
+  text-align: center;
+  margin-bottom: var(--space-sm);
+}
+
+/* 市松模様（Base × Accent の2色のみ厳格に使用） */
+.checker-board {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-image: conic-gradient(
+    var(--color-base)   90deg,
+    var(--color-accent) 90deg 180deg,
+    var(--color-base)   180deg 270deg,
+    var(--color-accent) 270deg
+  );
+  background-size: 32px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex: 1;
+}
+
+.checker-board img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* ===== Selected Previews ===== */
+.selected-preview {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-xs);
+  max-width: 696px;
+  margin-top: var(--space-md);
+}
+
+.preview-thumb {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  background-color: var(--color-base);
+  display: block;
+}
+
+/* ===== Result Grid ===== */
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-md);
+}
+
+.result-item {
+  background: var(--color-base);
+  padding: var(--space-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.result-item:hover {
+  opacity: 0.9;
+}
+
+.result-thumb {
+  width: 100%;
+  aspect-ratio: 37 / 32 !important;
+  background-color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.btn-item-dl {
+  background: var(--color-accent);
+  color: var(--color-main);
+  font-family: var(--font-base);
+  font-size: 16px;
+  font-weight: 700;
+  padding: var(--space-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.2s;
+  width: 100%;
+}
+
+.btn-item-dl:hover {
+  opacity: 0.8;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width: 1023px) {
+  .header { padding-top: var(--space-lg); }
+  .container { padding: 0 var(--space-md) var(--space-lg); }
+  .btn-group, .result-actions { flex-direction: column; }
+}
+
+@media (max-width: 767px) {
+  body                 { padding: 24px 16px 0; }
+  .hero-section        { flex-direction: column; text-align: center; gap: var(--space-md); padding: 0; }
+  .hero-section__title { font-size: 24px; margin-bottom: var(--space-sm); }
+  .hero-section__desc  { font-size: 14px; }
+  .howto-grid          { grid-template-columns: 1fr; }
+  .result-preview-grid { grid-template-columns: 1fr; }
+  .result-grid          { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: var(--space-sm); }
+  .section__heading    { font-size: 20px; }
+  .btn                 { font-size: 16px; padding: 18px 32px; }
+  .drop-zone           { padding: var(--space-xl) var(--space-sm); }
+  .checker-board       { aspect-ratio: 1 / 1; }
+  .tool-area           { padding: var(--space-md); gap: var(--space-md); }
+  .step-title          { font-size: 20px; }
+  .spec-note-title     { font-size: 16px; }
+  .spec-list li        { font-size: 14px; }
+}
