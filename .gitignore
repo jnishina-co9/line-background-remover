@@ -1,3 +1,6 @@
 node_modules
 dist
 .DS_Store
+DESIGN.md
+SPECIFICATION.md
+
