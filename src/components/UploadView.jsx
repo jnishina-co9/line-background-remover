@@ -49,12 +49,14 @@ export default function UploadView({ onProcess, selectedPreviews }) {
         </p>
 
         {selectedPreviews && selectedPreviews.length > 0 && (
-          <div className="selected-preview" onClick={(e) => e.stopPropagation()}>
-            <img
-              src={selectedPreviews[0]}
-              alt="アップロード画像のサムネイル"
-              className="preview-thumb"
-            />
+          <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }} onClick={(e) => e.stopPropagation()}>
+            <div style={{ width: '100%', maxWidth: '600px' }}>
+              <img
+                src={selectedPreviews[0]}
+                alt="アップロード画像のサムネイル"
+                style={{ width: '100%', height: 'auto', display: 'block', backgroundColor: '#FFFFFF' }}
+              />
+            </div>
           </div>
         )}
 

@@ -293,7 +293,7 @@ h1 {
   margin-top: -8px;
 }
 
-/* 選択画像プレビューエリア（画像分割ツールに合わせる） */
+/* 選択画像プレビューエリア */
 .selected-preview {
   width: 100%;
   margin-top: 24px;
@@ -306,12 +306,11 @@ h1 {
 }
 
 .selected-preview img {
+  width: 240px;
+  height: 240px;
   max-width: 100%;
-  max-height: 320px;
-  width: auto;
-  height: auto;
   object-fit: contain;
-  background-color: #FFFFFF;
+  background-color: var(--color-base);
   display: block;
 }
 
@@ -532,23 +531,7 @@ h1 {
   display: block;
 }
 
-/* ===== Selected Previews ===== */
-.selected-preview {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-xs);
-  max-width: 696px;
-  margin-top: var(--space-md);
-}
 
-.preview-thumb {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  background-color: var(--color-base);
-  display: block;
-}
 
 /* ===== Result Grid ===== */
 .result-grid {

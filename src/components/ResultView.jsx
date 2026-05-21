@@ -18,12 +18,20 @@ export default function ResultView({ items, onReset }) {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-        <div
-          className="result-item"
-          style={{ width: '100%', maxWidth: '402px', cursor: 'default' }}
-        >
-          <div className="result-thumb checker-board">
-            <img src={item.resultUrl} alt={item.originalName} />
+        <div style={{ width: '100%', maxWidth: '600px' }}>
+          <div style={{
+            width: '100%',
+            backgroundImage: 'conic-gradient(#FFFFFF 90deg, #E9E9E9 90deg 180deg, #FFFFFF 180deg 270deg, #E9E9E9 270deg)',
+            backgroundSize: '32px 32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <img
+              src={item.resultUrl}
+              alt={item.originalName}
+              style={{ width: '100%', height: 'auto', display: 'block' }}
+            />
           </div>
         </div>
       </div>
