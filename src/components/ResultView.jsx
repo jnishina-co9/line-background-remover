@@ -21,7 +21,7 @@ export default function ResultView({ items, onReset }) {
         <div style={{ width: '100%', maxWidth: '600px' }}>
           <div style={{
             width: '100%',
-            backgroundImage: 'conic-gradient(#FFFFFF 90deg, #E9E9E9 90deg 180deg, #FFFFFF 180deg 270deg, #E9E9E9 270deg)',
+            backgroundImage: 'conic-gradient(#FFFFFF 90deg, #EFEFEF 90deg 180deg, #FFFFFF 180deg 270deg, #EFEFEF 270deg)',
             backgroundSize: '32px 32px',
             display: 'flex',
             alignItems: 'center',

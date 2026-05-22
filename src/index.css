@@ -3,8 +3,8 @@
    ========================================================================== */
 :root {
   --color-base:   #FFFFFF;
-  --color-main:   #1D3FBB;
-  --color-accent: #E9E9E9;
+  --color-main:   #00c9a7;
+  --color-accent: #EFEFEF;
 
   --font-base:   'Noto Sans JP', sans-serif;
   --font-accent: 'Outfit', sans-serif;
@@ -64,7 +64,7 @@ h1 {
     font-size: 32px;
     font-weight: 700;
     margin: 0;
-    color: #1D3FBB; /* メインカラーの青 */
+    color: #00c9a7; /* メインカラー */
     letter-spacing: 0.05em; /* 文字同士が詰まりすぎないよう少し間隔を空ける */
 }
 
@@ -73,7 +73,7 @@ h1 {
     font-family: 'Noto Sans JP', sans-serif;
     font-size: 16px; /* メインタイトルのちょうど半分のサイズで控えめに */
     font-weight: 700;
-    color: #1D3FBB; /* メインタイトルと完全に同色の青 */
+    color: #00c9a7; /* メインタイトルと同色 */
     letter-spacing: 0.1em; /* 日本語文字の間にゆったりとした隙間を持たせ上品に */
 }
 
