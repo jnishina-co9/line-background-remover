@@ -89,7 +89,7 @@ export default function App() {
       <header className="header">
         <div className="header-section">
           <h1>BACKGROUND REMOVER</h1>
-          <div className="subtitle">- 背景削除ツール -</div>
+          <div className="subtitle">- 画像背景透過ツール -</div>
         </div>
       </header>
 
