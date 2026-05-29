@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BACKGROUND REMOVER — プロダクト仕様書</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  /* =============================================
+     RESET & BASE
+  ============================================= */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* 4色パレット（Junko指定） */
+    --color-main:    #007E66;   /* メインカラー（ダークグリーン） */
+    --color-base:    #FFFFFF;   /* ベースカラー（白） */
+    --color-sub:     #E7EAE7;   /* サブカラー（ライトグレーグリーン） */
+    --color-accent:  #F25A86;   /* アクセントカラー（ピンク） */
+    --color-text:    #333333;   /* テキストカラー */
+    /* 派生色（4色から計算） */
+    --color-text-sub:      #6B7B6B;   /* --color-sub を暗くした補助テキスト */
+    --color-border:        #D4D9D4;   /* --color-sub を少し濃くしたボーダー */
+    --color-main-light:    #E8F4F1;   /* --color-main の極薄（前提ブロック背景） */
+    --color-accent-light:  #FDEEF4;   /* --color-accent の極薄（将来ブロック背景） */
+    --font-base:     'Noto Sans JP', 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
+    --font-accent:   'Outfit', 'Segoe UI', -apple-system, sans-serif;
+    --sidebar-width: 260px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-base);
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--color-text);
+    background: var(--color-sub);
+    min-height: 100vh;
+  }
+
+  /* =============================================
+     LAYOUT SHELL
+  ============================================= */
+  .layout {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* =============================================
+     SIDEBAR
+  ============================================= */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    height: 100vh;
+    background: var(--color-base);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 100;
+    border-right: 1px solid var(--color-border);
+  }
+
+  .sidebar__brand {
+    padding: 24px 24px 16px;
+    border-bottom: 1px solid var(--color-border);
+    flex-shrink: 0;
+  }
+
+  .sidebar__app-name {
+    font-family: var(--font-accent);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-main);
+    text-transform: uppercase;
+    text-decoration: none;
+    display: block;
+  }
+
+  .sidebar__doc-type {
+    font-size: 12px;
+    color: var(--color-text-sub);
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+  }
+
+  .sidebar__nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 0 24px;
+  }
+
+  .sidebar__nav::-webkit-scrollbar { width: 4px; }
+  .sidebar__nav::-webkit-scrollbar-track { background: transparent; }
+  .sidebar__nav::-webkit-scrollbar-thumb { background: var(--color-border); }
+
+  .nav__section-label {
+    font-family: var(--font-accent);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--color-text-sub);
+    text-transform: uppercase;
+    padding: 16px 24px 6px;
+  }
+
+  .nav__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 24px;
+    font-family: var(--font-accent);
+    font-size: 14px;
+    color: var(--color-text-sub);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    border-left: 3px solid transparent;
+  }
+
+  .nav__item:hover {
+    background: var(--color-sub);
+    color: var(--color-text);
+  }
+
+  .nav__item.is-active {
+    background: var(--color-main-light);
+    color: var(--color-main);
+    border-left-color: var(--color-main);
+    font-weight: 700;
+  }
+
+  .nav__item-num {
+    font-family: var(--font-accent);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-main);
+    opacity: 0.6;
+    min-width: 20px;
+  }
+
+  .nav__item.is-active .nav__item-num { opacity: 1; }
+
+  /* =============================================
+     MAIN CONTENT
+  ============================================= */
+  .main {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* =============================================
+     PAGE HEADER
+  ============================================= */
+  .page-header {
+    background: var(--color-main);
+    padding: 48px 64px;
+  }
+
+  .page-header__eyebrow {
+    font-family: var(--font-accent);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .page-header__title {
+    font-family: var(--font-accent);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--color-base);
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+  }
+
+  .page-header__subtitle {
+    font-size: 16px;
+    color: rgba(255,255,255,0.8);
+    margin-top: 8px;
+    font-weight: 500;
+  }
+
+  .page-header__meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+
+  .meta-badge {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .meta-badge__label {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.6);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .meta-badge__value {
+    font-family: var(--font-accent);
+    font-size: 14px;
+    color: var(--color-base);
+    font-weight: 600;
+  }
+
+  /* =============================================
+     CONTENT AREA
+  ============================================= */
+  .content {
+    padding: 48px 64px;
+  }
+
+  /* =============================================
+     APP CARD (Section 0)
+  ============================================= */
+  .app-card {
+    background: var(--color-base);
+    padding: 40px;
+    margin-bottom: 48px;
+    border-left: 6px solid var(--color-main);
+  }
+
+  .app-card__title {
+    font-family: var(--font-accent);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--color-main);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .app-card__table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .app-card__table tr {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .app-card__table tr:last-child { border-bottom: none; }
+
+  .app-card__table th {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-text-sub);
+    letter-spacing: 0.05em;
+    padding: 12px 16px 12px 0;
+    text-align: left;
+    white-space: nowrap;
+    width: 130px;
+    vertical-align: top;
+  }
+
+  .app-card__table td {
+    font-size: 16px;
+    color: var(--color-text);
+    padding: 12px 0;
+    vertical-align: top;
+  }
+
+  .tech-tag {
+    display: inline-block;
+    background: var(--color-sub);
+    color: var(--color-text);
+    font-size: 14px;
+    padding: 3px 10px;
+    font-family: var(--font-accent);
+    font-weight: 600;
+    margin: 2px 4px 2px 0;
+  }
+
+  .url-link {
+    font-family: var(--font-accent);
+    font-size: 14px;
+    color: var(--color-main);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-main);
+    padding-bottom: 1px;
+  }
+
+  /* =============================================
+     SECTION
+  ============================================= */
+  .spec-section {
+    margin-bottom: 40px;
+    scroll-margin-top: 24px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--color-main);
+  }
+
+  .section-num {
+    font-family: var(--font-accent);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-main);
+    opacity: 0.4;
+  }
+
+  .section-title {
+    font-family: var(--font-accent);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: 0.02em;
+  }
+
+  .section-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* =============================================
+     ACCORDION
+  ============================================= */
+  .accordion {
+    background: var(--color-base);
+    overflow: hidden;
+  }
+
+  .accordion__trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    gap: 12px;
+    transition: background 0.15s;
+  }
+
+  .accordion__trigger:hover { background: var(--color-main-light); }
+
+  .accordion__trigger-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .accordion__tag {
+    font-family: var(--font-accent);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    white-space: nowrap;
+    background: var(--color-sub);
+    color: var(--color-text-sub);
+  }
+
+  .accordion__title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .accordion__icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: var(--color-accent);
+    transition: transform 0.25s ease;
+  }
+
+  .accordion.is-open .accordion__icon { transform: rotate(180deg); }
+
+  .accordion__body {
+    display: none;
+    padding: 12px 24px 24px;
+    animation: fadeIn 0.2s ease;
+  }
+
+  .accordion.is-open .accordion__body { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .accordion__body p {
+    font-size: 16px;
+    line-height: 1.9;
+    color: var(--color-text);
+    margin-bottom: 12px;
+  }
+
+  .accordion__body p:last-child { margin-bottom: 0; }
+
+  /* =============================================
+     SPEC BLOCKS (前提・制約・決定理由)
+  ============================================= */
+  .block-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .spec-block {
+    padding: 16px 24px;
+    background: transparent;
+    border-left: 4px solid var(--color-text);
+  }
+
+  /* アコーディオンの直後に配置される縦線ブロックに上部余白を追加 */
+  .accordion + .spec-block,
+  .accordion + .block-grid {
+    margin-top: 32px;
+  }
+
+  .spec-block__label {
+    font-family: var(--font-accent);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    color: var(--color-text);
+  }
+
+  .spec-block ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .spec-block li {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--color-text);
+    padding-left: 14px;
+    position: relative;
+  }
+
+  .spec-block li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 5px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.5;
+  }
+
+  /* =============================================
+     FLOW DIAGRAM
+  ============================================= */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: var(--color-base);
+    padding: 24px 24px 32px;
+  }
+
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .flow-step__left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    align-self: stretch;
+  }
+
+  .flow-step__num {
+    width: 32px;
+    height: 32px;
+    background: var(--color-main);
+    color: var(--color-base);
+    font-family: var(--font-accent);
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .flow-step__line {
+    width: 2px;
+    flex: 1;
+    min-height: 32px;
+    background: var(--color-border);
+    margin: 0 auto;
+  }
+
+  .flow-step:last-child .flow-step__line { display: none; }
+
+  .flow-step__content {
+    padding-top: 0;
+    padding-bottom: 32px;
+  }
+
+  .flow-step:last-child .flow-step__content { padding-bottom: 0; }
+
+  .flow-step__title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+
+  .flow-step__desc {
+    font-size: 16px;
+    color: var(--color-text-sub);
+    line-height: 1.7;
+  }
+
+  .demo-video-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 16px auto 0 auto;
+  }
+
+  .demo-video-wrapper video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid var(--color-border);
+  }
+
+  /* =============================================
+     PAGE FOOTER
+  ============================================= */
+  .page-footer {
+    padding: 32px 64px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--color-text-sub);
+  }
+
+  /* =============================================
+     PROGRESS BAR
+  ============================================= */
+  .reading-progress {
+    position: fixed;
+    top: 0;
+    left: var(--sidebar-width);
+    right: 0;
+    height: 3px;
+    background: var(--color-border);
+    z-index: 200;
+  }
+
+  .reading-progress__bar {
+    height: 100%;
+    background: var(--color-main);
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+
+  /* =============================================
+     RESPONSIVE — デスクトップファースト 4段階
+  ============================================= */
+
+  /* XL: 大画面（1440px 以上） */
+  @media (min-width: 1440px) {
+    :root { --sidebar-width: 280px; }
+    .content { padding: 56px 80px; }
+    .page-header { padding: 56px 80px; }
+    .page-footer { padding: 24px 80px; }
+  }
+
+  /* M: タブレット（768–1023px） */
+  @media (max-width: 1023px) {
+    :root { --sidebar-width: 220px; }
+    .content { padding: 32px 40px; }
+    .page-header { padding: 40px; }
+    .page-footer { padding: 20px 40px; }
+    .block-grid { grid-template-columns: 1fr; }
+  }
+
+  /* S: スマホ（767px 以下） */
+  @media (max-width: 767px) {
+    .sidebar {
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+    .sidebar.is-open { transform: translateX(0); }
+
+    .main { margin-left: 0; }
+    .page-footer {
+      padding: 16px 20px 24px;
+      flex-direction: column;
+      gap: 4px;
+      text-align: center;
+      font-size: 11px;
+    }
+    .reading-progress { left: 0; }
+    .page-header { padding: 56px 20px 32px; }
+    .page-header__title { font-size: 24px; }
+    .section-title { font-size: 16px; }
+    .section-num { font-size: 18px; }
+    .accordion__title, .flow-step__title { font-size: 14px; }
+    .accordion__body p, .spec-block li, .flow-step__desc, .app-card__table td { font-size: 14px; }
+    .nav__item, .app-card__table th, .meta-badge__value, .tech-tag, .url-link, .flow-step__num { font-size: 13px; }
+    .sidebar__doc-type, .nav__section-label, .nav__item-num, .meta-badge__label, .accordion__tag, .spec-block__label { font-size: 11px; }
+    .content { padding: 24px 20px; }
+    .block-grid { grid-template-columns: 1fr; }
+
+    /* メニューボタン（右上固定） */
+    .menu-toggle {
+      display: flex;
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      width: 44px;
+      height: 44px;
+      background: var(--color-main);
+      color: #fff;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 300;
+      border: none;
+      border-radius: 0;
+    }
+
+    /* トップへ戻るボタン（右下固定） */
+    .scroll-top-btn {
+      display: flex;
+    }
+
+    /* オーバーレイ */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 99;
+    }
+    .overlay.is-active { display: block; }
+  }
+
+  /* =============================================
+     SCROLL TO TOP BUTTON
+  ============================================= */
+  .scroll-top-btn {
+    display: none;
+    position: fixed;
+    bottom: 24px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    background: var(--color-text);
+    color: #fff;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 200;
+    border: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .scroll-top-btn.is-visible { opacity: 1; }
+
+  /* =============================================
+     PRINT
+  ============================================= */
+  @media print {
+    .sidebar, .reading-progress, .menu-toggle, .scroll-top-btn { display: none !important; }
+    .main { margin-left: 0; }
+    .accordion__body { display: block !important; }
+    .accordion__icon { display: none; }
+    .page-header { background: none; padding: 0 0 24px; border-bottom: 2px solid #000; }
+    .page-header__title, .page-header__subtitle { color: #000; }
+    .page-header__eyebrow, .meta-badge__label { color: #666; }
+    .meta-badge__value { color: #000; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 読書進捗バー -->
+<div class="reading-progress" role="progressbar" aria-label="読書進捗">
+  <div class="reading-progress__bar" id="progressBar"></div>
+</div>
+
+<!-- モバイルオーバーレイ -->
+<div class="overlay" id="overlay"></div>
+
+<!-- メニューボタン（SP時・右上固定） -->
+<button class="menu-toggle" id="menuToggle" aria-label="目次を開く" style="display:none;">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+
+<!-- トップへ戻るボタン（SP時・右下固定） -->
+<button class="scroll-top-btn" id="scrollTopBtn" aria-label="ページ先頭に戻る">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<div class="layout">
+
+  <!-- ======= SIDEBAR ======= -->
+  <aside class="sidebar" id="sidebar" role="navigation" aria-label="目次">
+    <div class="sidebar__brand">
+      <a href="#" class="sidebar__app-name">BACKGROUND REMOVER</a>
+      <div class="sidebar__doc-type">プロダクト仕様書 v1.0</div>
+    </div>
+
+    <nav class="sidebar__nav">
+      <div class="nav__section-label">Overview</div>
+      <a class="nav__item" href="#sec-0" id="nav-0">
+        <span class="nav__item-num">00</span>Quick Summary
+      </a>
+
+      <div class="nav__section-label">Requirements</div>
+      <a class="nav__item" href="#sec-1" id="nav-1">
+        <span class="nav__item-num">01</span>アプリ概要
+      </a>
+      <a class="nav__item" href="#sec-2" id="nav-2">
+        <span class="nav__item-num">02</span>使用技術と選定理由
+      </a>
+      <a class="nav__item" href="#sec-3" id="nav-3">
+        <span class="nav__item-num">03</span>主な機能
+      </a>
+
+      <div class="nav__section-label">Design</div>
+      <a class="nav__item" href="#sec-4" id="nav-4">
+        <span class="nav__item-num">04</span>UI / UX の工夫
+      </a>
+      <a class="nav__item" href="#sec-5" id="nav-5">
+        <span class="nav__item-num">05</span>技術的工夫
+      </a>
+
+      <div class="nav__section-label">Architecture</div>
+      <a class="nav__item" href="#sec-6" id="nav-6">
+        <span class="nav__item-num">06</span>処理フロー
+      </a>
+      <a class="nav__item" href="#sec-7" id="nav-7">
+        <span class="nav__item-num">07</span>今後の改善案
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ======= MAIN ======= -->
+  <div class="main">
+
+    <!-- PAGE HEADER -->
+    <header class="page-header">
+      <div class="page-header__eyebrow">PRODUCT SPECIFICATION</div>
+      <h1 class="page-header__title">BACKGROUND REMOVER</h1>
+      <div class="page-header__subtitle">LINEスタンプ特化型・画像背景透過ツール</div>
+      <div class="page-header__meta">
+        <div class="meta-badge">
+          <span class="meta-badge__label">Version</span>
+          <span class="meta-badge__value">v1.0</span>
+        </div>
+        <div class="meta-badge">
+          <span class="meta-badge__label">Status</span>
+          <span class="meta-badge__value">公開中</span>
+        </div>
+        <div class="meta-badge">
+          <span class="meta-badge__label">Tech Stack</span>
+          <span class="meta-badge__value">React / CSS / Vite</span>
+        </div>
+        <div class="meta-badge">
+          <span class="meta-badge__label">Updated</span>
+          <span class="meta-badge__value">2026-05</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="content">
+
+      <!-- ================================
+           SECTION 0: アプリカード
+      ================================ -->
+      <section class="spec-section" id="sec-0" aria-labelledby="title-0">
+        <div class="section-header">
+          <span class="section-num">00</span>
+          <h2 class="section-title" id="title-0">Quick Summary</h2>
+        </div>
+
+        <div class="app-card">
+          <div class="app-card__title">Quick Summary</div>
+          <table class="app-card__table">
+            <tbody>
+              <tr>
+                <th>アプリ概要</th>
+                <td>ブラウザ上で画像の被写体をAIが自動認識し、背景をきれいに透過・削除できる完全無料のWebツール</td>
+              </tr>
+              <tr>
+                <th>技術スタック</th>
+                <td>
+                  <span class="tech-tag">React</span>
+                  <span class="tech-tag">CSS</span>
+                  <span class="tech-tag">Vite</span>
+                  <span class="tech-tag">@imgly/background-removal</span>
+                </td>
+              </tr>
+              <tr>
+                <th>最大の特徴</th>
+                <td>完全クライアントサイド処理。画像データを外部サーバーに一切送信しないため安全</td>
+              </tr>
+              <tr>
+                <th>公開 URL</th>
+                <td>
+                  <a class="url-link" href="https://jnishina-co9.github.io/line-background-remover/" target="_blank" rel="noopener">
+                    jnishina-co9.github.io/line-background-remover/
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 前提・制約ブロック -->
+        <div class="block-grid">
+          <div class="spec-block spec-block--premise">
+            <div class="spec-block__label">前提条件</div>
+            <ul>
+              <li>モダンブラウザ（Google ChromeやSafari、Edgeなど）で動作（※初回のみAIプログラムをブラウザに読み込むためのダウンロード通信が発生しますが、ユーザーの画像データをネット上に送信することは一切ありません）</li>
+              <li>インストール不要・サーバー不要</li>
+              <li>完全無料・ログイン不要</li>
+            </ul>
+          </div>
+          <div class="spec-block spec-block--constraint">
+            <div class="spec-block__label">制約・スコープ外</div>
+            <ul>
+              <li>サーバーサイド処理（外部のサーバーにデータを送って処理する方式）は行わない</li>
+              <li>ユーザーデータの保存・管理機能なし（個人情報の漏洩リスクなし）</li>
+              <li>IEや旧ブラウザは非対応</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================
+           SECTION 1: アプリ概要
+      ================================ -->
+      <section class="spec-section" id="sec-1" aria-labelledby="title-1">
+        <div class="section-header">
+          <span class="section-num">01</span>
+          <h2 class="section-title" id="title-1">アプリ概要</h2>
+        </div>
+        <div class="section-body">
+
+          <div class="accordion is-open" id="acc-1-1">
+            <button class="accordion__trigger" aria-expanded="true" aria-controls="body-1-1">
+              <div class="accordion__trigger-left">
+                <span class="accordion__tag accordion__tag--feature">機能</span>
+                <span class="accordion__title">何を作ったか</span>
+              </div>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="accordion__body" id="body-1-1">
+              <p>アップロードした画像をAIが自動で解析し、人物や物といった被写体だけを切り抜いて背景を透過させたPNG形式の画像を作成できる、インストール不要の完全無料ツールです。</p>
+            </div>
+          </div>
+
+          <div class="accordion" id="acc-1-2">
+            <button class="accordion__trigger" aria-expanded="false" aria-controls="body-1-2">
+              <div class="accordion__trigger-left">
+                <span class="accordion__tag accordion__tag--rationale">背景・動機</span>
+                <span class="accordion__title">なぜ作ったか</span>
+              </div>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="accordion__body" id="body-1-2">
+              <p><strong>背景：</strong> LINEスタンプを販売するには、すべての背景を透過させたPNG画像を用意する必要があります。しかし、1セットあたり最大40枚もの画像を一枚ずつ丁寧に切り抜く作業は、自作スタンプを作りたい個人クリエイターにとって、多くの時間と手間がかかる高いハードルとなっています。</p>
+              <p><strong>課題：</strong> 既存の多くの背景削除ツールは、外部サーバーへの画像のアップロードが必要であり、大切な写真や未公開のデザインデータが漏洩するセキュリティ面のリスクや、無料版での画質劣化、処理枚数制限などの課題がありました。</p>
+              <p><strong>解決策：</strong> そこで、外部サーバーへ画像を一切送信せず、ユーザーの手元の端末のブラウザ上だけで背景削除を完結させることで、「外部送信なしによるプライバシー保護」「高画質な透過処理」「無制限かつ完全無料」を同時に実現しました。</p>
+            </div>
+          </div>
+
+          <!-- デモ動画（枠のみ） -->
+          <div class="spec-block" style="margin-top: 32px;">
+            <div class="spec-block__label">デモ動画</div>
+            <div class="demo-video-wrapper">
+              <video src="demo.mp4" preload="metadata" autoplay loop muted playsinline controls>
+                お使いのブラウザは動画の再生に対応していません。
+              </video>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================================
+           SECTION 2: 使用技術と選定理由
+      ================================ -->
+      <section class="spec-section" id="sec-2" aria-labelledby="title-2">
+        <div class="section-header">
+          <span class="section-num">02</span>
+          <h2 class="section-title" id="title-2">使用技術と選定理由</h2>
+        </div>
+        <div class="section-body">
+
+          <div class="accordion is-open" id="acc-2-1">
+            <button class="accordion__trigger" aria-expanded="true" aria-controls="body-2-1">
+              <div class="accordion__trigger-left">
+                <span class="accordion__tag accordion__tag--tech">コア技術</span>
+                <span class="accordion__title">React / CSS / Vite</span>
+              </div>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="accordion__body" id="body-2-1">
+              <p><strong>React（画面の一部を効率良く書き換える部品化ライブラリ）：</strong> 画像選択、AI処理中、結果表示というアプリの3つの状態を、安全かつリアルタイムに画面へ反映させるため採用しました。</p>
+              <p><strong>CSS（ウェブページのデザイン・スタイルを指定する言語）：</strong> 外部のデザイン枠組みを使わず、3色のフラットでミニマルなデザインと、余白ルールを正確に制御するため採用しました。</p>
+              <p><strong>Vite（プログラムを高速に組み立てて動かす開発ツール）：</strong> 不要なコードを自動で削ぎ落とし、表示速度の速い軽量なプログラムファイルを生成するために採用しました。</p>
+            </div>
+          </div>
+
+          <div class="accordion" id="acc-2-2">
+            <button class="accordion__trigger" aria-expanded="false" aria-controls="body-2-2">
+              <div class="accordion__trigger-left">
+                <span class="accordion__tag accordion__tag--tech">AIモデル</span>
+                <span class="accordion__title">@imgly/background-removal</span>
+              </div>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="accordion__body" id="body-2-2">
+              <p>WebAssembly（ブラウザ上でプログラムを高速実行する技術）とONNX Runtime Web（AIをブラウザ上で動かす技術）を採用し、画像データを外部サーバーへ一切送信せず、ユーザーの端末内だけでAI処理を完結させる仕組みです。</p>
+              <p>これにより、サーバーの運用費用をゼロに抑えつつ、情報漏洩リスクが一切ない安全な背景透過処理を実現しました。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================
+           SECTION 3: 主な機能
+      ================================ -->
+      <section class="spec-section" id="sec-3" aria-labelledby="title-3">
+        <div class="section-header">
+          <span class="section-num">03</span>
+          <h2 class="section-title" id="title-3">主な機能</h2>
+        </div>
+        <div class="section-body">
+
+          <div class="accordion is-open" id="acc-3-1">
+            <button class="accordion__trigger" aria-expanded="true" aria-controls="body-3-1">
+              <div class="accordion__trigger-left">
+                <span class="accordion__tag accordion__tag--feature">機能</span>
+                <span class="accordion__title">ドラッグ＆ドロップによる画像選択</span>
+              </div>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="accordion__body" id="body-3-1">
+              <p>枠内に画像を直接ドラッグ＆ドロップするだけで、選択した画像が即座にプレビューされ、アップロードが完了します。</p>
+            </div>
+          </div>
+
+          <div class="accordion" id="acc-3-2">
+            <button class="accordion__trigger" aria-expanded="false" aria-controls="body-3-2">
+              <div class="accordion__trigger-left">
+                <span class="accordion__tag accordion__tag--feature">機能</span>
+                <span class="accordion__title">AI自動背景透過処理＆リアルタイムプレビュー</span>
+              </div>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="accordion__body" id="body-3-2">
+              <p>画像をアップロードすると、AIが被写体を瞬時に自動識別し、輪郭をなめらかに切り抜いて背景部分を完全に透過させたプレビュー画像をその場で表示します。</p>
+            </div>
+          </div>
+
+          <div class="accordion" id="acc-3-3">
+            <button class="accordion__trigger" aria-expanded="false" aria-controls="body-3-3">
+              <div class="accordion__trigger-left">
+                <span class="accordion__tag accordion__tag--feature">機能</span>
+                <span class="accordion__title">透過PNG画像ダウンロード</span>
+              </div>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="accordion__body" id="body-3-3">
+              <p>透過処理された高品質なPNG形式の画像を、ワンクリックでローカル環境へ保存できます。</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================================
+           SECTION 4: UI/UXの工夫
+      ================================ -->
+      <section class="spec-section" id="sec-4" aria-labelledby="title-4">
+        <div class="section-header">
+          <span class="section-num">04</span>
+          <h2 class="section-title" id="title-4">UI / UX の工夫</h2>
+        </div>
+        <div class="section-body">
+
+          <div class="accordion is-open" id="acc-4-1">
+            <button class="accordion__trigger" aria-expanded="true" aria-controls="body-4-1">
+              <div class="accordion__trigger-left">
+                <span class="accordion__tag accordion__tag--design">デザイン</span>
+                <span class="accordion__title">3色ミニマリズムデザイン</span>
+              </div>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="accordion__body" id="body-4-1">
+              <p>使用する色を、白、エメラルドグリーン、明るいグレーの3色だけに制限。枠線や影、角丸を一切使用せず、背景色と文字の配置のみで、現代的で洗練されたデザインを実現しました。</p>
+            </div>
+          </div>
+
+          <div class="accordion" id="acc-4-2">
+            <button class="accordion__trigger" aria-expanded="false" aria-controls="body-4-2">
+              <div class="accordion__trigger-left">
+                <span class="accordion__tag accordion__tag--design">UX</span>
+                <span class="accordion__title">ステップ形式の明快な操作導線</span>
+              </div>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="accordion__body" id="body-4-2">
+              <p>見出しに「1. 画像を選択」「2. 変換結果」と番号を振り、ユーザーが上から順番に操作するだけで、直感的かつスムーズに目的の処理を達成できるよう設計しています。</p>
+            </div>
+          </div>
+
+          <div class="accordion" id="acc-4-3">
+            <button class="accordion__trigger" aria-expanded="false" aria-controls="body-4-3">
+              <div class="accordion__trigger-left">
+                <span class="accordion__tag accordion__tag--design">レスポンシブ</span>
+                <span class="accordion__title">モバイル端末への完全対応</span>
+              </div>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="accordion__body" id="body-4-3">
+              <p>PCの大画面では左右に並ぶレイアウトも、スマートフォンのような画面の狭い端末では自動的に縦1列に並び替わるようにし、どのデバイスからアクセスしても快適に操作できるよう最適化しました。</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================================
+           SECTION 5: 技術的工夫
+      ================================ -->
+      <section class="spec-section" id="sec-5" aria-labelledby="title-5">
+        <div class="section-header">
+          <span class="section-num">05</span>
+          <h2 class="section-title" id="title-5">技術的工夫（差別化ポイント）</h2>
+        </div>
+        <div class="section-body">
+
+          <div class="accordion is-open" id="acc-5-1">
+            <button class="accordion__trigger" aria-expanded="true" aria-controls="body-5-1">
+              <div class="accordion__trigger-left">
+                <span class="accordion__tag accordion__tag--tech">セキュリティ</span>
+                <span class="accordion__title">完全クライアントサイドでの処理</span>
+              </div>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="accordion__body" id="body-5-1">
+              <p>従来はサーバー側で行うのが一般的だった重いAI背景透過処理を、WASM（ウェブアセンブリ：ブラウザ上でプログラムを高速実行する技術）などの最新技術を活用してブラウザ上で直接動作させ、送信に伴う情報漏洩リスクを排除しました。</p>
+            </div>
+          </div>
+
+          <div class="accordion" id="acc-5-2">
+            <button class="accordion__trigger" aria-expanded="false" aria-controls="body-5-2">
+              <div class="accordion__trigger-left">
+                <span class="accordion__tag accordion__tag--tech">パフォーマンス</span>
+                <span class="accordion__title">確実なメモリ管理（メモリリークの防止）</span>
+              </div>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="accordion__body" id="body-5-2">
+              <p>背景透過画像のプレビュー表示用にブラウザが一時的に発行するURLは、使用後に破棄しないとブラウザのメモリ領域を圧迫し続けます。リセット時や次の処理開始時にメモリを解放する命令を実行し、ブラウザの動作が重くなるのを防いでいます。</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================================
+           SECTION 6: 処理フロー
+      ================================ -->
+      <section class="spec-section" id="sec-6" aria-labelledby="title-6">
+        <div class="section-header">
+          <span class="section-num">06</span>
+          <h2 class="section-title" id="title-6">処理フロー</h2>
+        </div>
+
+        <div class="flow">
+          <div class="flow-step">
+            <div class="flow-step__left">
+              <div class="flow-step__num">1</div>
+              <div class="flow-step__line"></div>
+            </div>
+            <div class="flow-step__content">
+              <div class="flow-step__title">画像入力と過去URLの解放</div>
+              <div class="flow-step__desc">ドラッグ＆ドロップ等で画像を読み込むと同時に、前回のプレビュー用一時URLを破棄してブラウザのメモリ蓄積を防止</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-step__left">
+              <div class="flow-step__num">2</div>
+              <div class="flow-step__line"></div>
+            </div>
+            <div class="flow-step__content">
+              <div class="flow-step__title">AIモデルのロード</div>
+              <div class="flow-step__desc">背景透過を行うAIプログラムを、ブラウザの裏側で自動的に読み込む</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-step__left">
+              <div class="flow-step__num">3</div>
+              <div class="flow-step__line"></div>
+            </div>
+            <div class="flow-step__content">
+              <div class="flow-step__title">画像の解析と背景透過処理</div>
+              <div class="flow-step__desc">AIが画像を解析して被写体の輪郭を自動で切り抜き、背景を取り除いたPNG形式の画像データを生成</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-step__left">
+              <div class="flow-step__num">4</div>
+              <div class="flow-step__line"></div>
+            </div>
+            <div class="flow-step__content">
+              <div class="flow-step__title">プレビューURLの生成と表示</div>
+              <div class="flow-step__desc">生成した画像データを画面に表示するための一時的なアクセスURLを発行し、プレビュー画面に表示</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="flow-step__left">
+              <div class="flow-step__num">5</div>
+              <div class="flow-step__line"></div>
+            </div>
+            <div class="flow-step__content">
+              <div class="flow-step__title">透過画像のダウンロード保存</div>
+              <div class="flow-step__desc">「保存する」ボタンが押された際に、ブラウザの自動ダウンロード機能を用いて透過PNG画像をユーザー端末に保存</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================
+           SECTION 7: 今後の改善案
+      ================================ -->
+      <section class="spec-section" id="sec-7" aria-labelledby="title-7">
+        <div class="section-header">
+          <span class="section-num">07</span>
+          <h2 class="section-title" id="title-7">今後の改善案</h2>
+        </div>
+        <div class="section-body">
+
+          <div class="accordion is-open" id="acc-7-1">
+            <button class="accordion__trigger" aria-expanded="true" aria-controls="body-7-1">
+              <div class="accordion__trigger-left">
+                <span class="accordion__tag accordion__tag--future">将来</span>
+                <span class="accordion__title">複数画像の一括背景透過と一括ZIPダウンロード</span>
+              </div>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="accordion__body" id="body-7-1">
+              <p>現在手動で1枚ずつ処理している画像を、複数まとめてドラッグ＆ドロップし、AIが順次処理を行って、最終的にZIP（複数のファイルを一つに圧縮したファイル形式）にまとめて一括保存できる機能の追加を検討しています。本機能の実装に向けて、すでにZIP圧縮ライブラリ（JSZip）の導入と検証を完了しており、現在は複数ファイルを処理するUI設計を進めています。</p>
+            </div>
+          </div>
+
+          <div class="accordion" id="acc-7-2">
+            <button class="accordion__trigger" aria-expanded="false" aria-controls="body-7-2">
+              <div class="accordion__trigger-left">
+                <span class="accordion__tag accordion__tag--future">将来</span>
+                <span class="accordion__title">背景の単色塗りつぶし・合成機能</span>
+              </div>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="accordion__body" id="body-7-2">
+              <p>背景を透過させるだけでなく、任意の単色カラーで塗りつぶしたり、別の背景画像をアップロードして合成写真を生成したりできる機能の導入を視野に入れています。</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main><!-- /content -->
+
+    <!-- PAGE FOOTER -->
+    <footer class="page-footer" role="contentinfo">
+      <span>© 2026 深森呼吸</span>
+      <span>本資料の転載・複製・改変を禁止します</span>
+    </footer>
+
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<script>
+  // ======================================================
+  // ACCORDION
+  // ======================================================
+  document.querySelectorAll('.accordion__trigger').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const accordion = btn.closest('.accordion');
+      const isOpen = accordion.classList.contains('is-open');
+
+      accordion.classList.toggle('is-open', !isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+    });
+  });
+
+  // ======================================================
+  // READING PROGRESS BAR
+  // ======================================================
+  const progressBar = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = progress + '%';
+  });
+
+  // ======================================================
+  // SIDEBAR ACTIVE HIGHLIGHT
+  // ======================================================
+  const sections = document.querySelectorAll('.spec-section[id]');
+  const navItems = document.querySelectorAll('.nav__item[id]');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id.replace('sec-', '');
+        navItems.forEach(item => item.classList.remove('is-active'));
+        const active = document.getElementById('nav-' + id);
+        if (active) active.classList.add('is-active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+
+  // ======================================================
+  // MOBILE UI CONTROL
+  // ======================================================
+  const sidebar      = document.getElementById('sidebar');
+  const overlay      = document.getElementById('overlay');
+  const toggle       = document.getElementById('menuToggle');
+  const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+  const isMobile = () => window.innerWidth <= 767;
+
+  function updateMobileUI() {
+    const mobile = isMobile();
+    toggle.style.display = mobile ? 'flex' : 'none';
+    if (!mobile) {
+      scrollTopBtn.style.display = 'none';
+    } else {
+      scrollTopBtn.style.display = 'flex';
+    }
+  }
+
+  // メニューボタン（右上）
+  toggle.addEventListener('click', () => {
+    sidebar.classList.toggle('is-open');
+    overlay.classList.toggle('is-active');
+  });
+
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('is-open');
+    overlay.classList.remove('is-active');
+  });
+
+  // サイドバーリンクをクリックしたらSPでは閉じる
+  document.querySelectorAll('.nav__item').forEach(item => {
+    item.addEventListener('click', () => {
+      if (isMobile()) {
+        sidebar.classList.remove('is-open');
+        overlay.classList.remove('is-active');
+      }
+    });
+  });
+
+  // トップへ戻るボタン（右下）：スクロール200px超で表示
+  window.addEventListener('scroll', () => {
+    if (isMobile()) {
+      scrollTopBtn.classList.toggle('is-visible', window.scrollY > 200);
+    }
+  });
+
+  scrollTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  window.addEventListener('resize', updateMobileUI);
+  updateMobileUI();
+</script>
+
+</body>
+</html>
