@@ -749,7 +749,7 @@
         <span class="nav__item-num">01</span>アプリ概要
       </a>
       <a class="nav__item" href="#sec-2" id="nav-2">
-        <span class="nav__item-num">02</span>使用技術と選定理由
+        <span class="nav__item-num">02</span>使用技術
       </a>
       <a class="nav__item" href="#sec-3" id="nav-3">
         <span class="nav__item-num">03</span>主な機能
@@ -760,7 +760,7 @@
         <span class="nav__item-num">04</span>UI / UX の工夫
       </a>
       <a class="nav__item" href="#sec-5" id="nav-5">
-        <span class="nav__item-num">05</span>技術的工夫
+        <span class="nav__item-num">05</span>設計の意図
       </a>
 
       <div class="nav__section-label">Architecture</div>
@@ -768,7 +768,7 @@
         <span class="nav__item-num">06</span>処理フロー
       </a>
       <a class="nav__item" href="#sec-7" id="nav-7">
-        <span class="nav__item-num">07</span>今後の改善案
+        <span class="nav__item-num">07</span>おわりに
       </a>
     </nav>
   </aside>
@@ -919,43 +919,52 @@
       </section>
 
       <!-- ================================
-           SECTION 2: 使用技術と選定理由
+           SECTION 2: 使用技術
       ================================ -->
       <section class="spec-section" id="sec-2" aria-labelledby="title-2">
         <div class="section-header">
           <span class="section-num">02</span>
-          <h2 class="section-title" id="title-2">使用技術と選定理由</h2>
+          <h2 class="section-title" id="title-2">使用技術</h2>
         </div>
         <div class="section-body">
-
-          <div class="accordion is-open" id="acc-2-1">
-            <button class="accordion__trigger" aria-expanded="true" aria-controls="body-2-1">
-              <div class="accordion__trigger-left">
-                <span class="accordion__tag accordion__tag--tech">コア技術</span>
-                <span class="accordion__title">React / CSS / Vite</span>
-              </div>
-              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="accordion__body" id="body-2-1">
-              <p><strong>React（画面の一部を効率良く書き換える部品化ライブラリ）：</strong> 画像選択、AI処理中、結果表示というアプリの3つの状態を、安全かつリアルタイムに画面へ反映させるため採用しました。</p>
-              <p><strong>CSS（ウェブページのデザイン・スタイルを指定する言語）：</strong> 外部のデザイン枠組みを使わず、3色のフラットでミニマルなデザインと、余白ルールを正確に制御するため採用しました。</p>
-              <p><strong>Vite（プログラムを高速に組み立てて動かす開発ツール）：</strong> 不要なコードを自動で削ぎ落とし、表示速度の速い軽量なプログラムファイルを生成するために採用しました。</p>
-            </div>
+          <div class="app-card" style="border-left-color: var(--color-main); margin-bottom: 32px;">
+            <table class="app-card__table">
+              <tbody>
+                <tr>
+                  <th>React</th>
+                  <td>画面の一部を効率良く書き換えるための部品化ライブラリ</td>
+                </tr>
+                <tr>
+                  <th>CSS</th>
+                  <td>ウェブページのデザイン・スタイルを指定する言語</td>
+                </tr>
+                <tr>
+                  <th>Vite</th>
+                  <td>プログラムを高速に組み立てて動かす開発ツール</td>
+                </tr>
+                <tr>
+                  <th>@imgly/background-removal</th>
+                  <td>AIがブラウザ上で背景透過処理を行うライブラリ（画像データを外部サーバーに送信せず、端末内だけでAI処理を完結させる）</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
-          <div class="accordion" id="acc-2-2">
-            <button class="accordion__trigger" aria-expanded="false" aria-controls="body-2-2">
-              <div class="accordion__trigger-left">
-                <span class="accordion__tag accordion__tag--tech">AIモデル</span>
-                <span class="accordion__title">@imgly/background-removal</span>
-              </div>
-              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="accordion__body" id="body-2-2">
-              <p>WebAssembly（ブラウザ上でプログラムを高速実行する技術）とONNX Runtime Web（AIをブラウザ上で動かす技術）を採用し、画像データを外部サーバーへ一切送信せず、ユーザーの端末内だけでAI処理を完結させる仕組みです。</p>
-              <p>これにより、サーバーの運用費用をゼロに抑えつつ、情報漏洩リスクが一切ない安全な背景透過処理を実現しました。</p>
-            </div>
+          <div class="spec-block spec-block--premise">
+            <div class="spec-block__label">アプリの動作ルール</div>
+            <ul>
+              <li>外部ライブラリはnpm（パッケージ管理ツール）で管理し、Vite（ビルドツール）で一つのプログラムに組み立てている</li>
+              <li>画像データを外部サーバーに一切送信しない、完全クライアントサイド処理</li>
+            </ul>
           </div>
+          <div class="spec-block spec-block--constraint">
+            <div class="spec-block__label">ご利用時の注意点</div>
+            <ul>
+              <li>初回アクセス時のみ、AIモデル（約40MB）のダウンロードが発生する（2回目以降はブラウザにキャッシュされるため高速に動作する）</li>
+              <li>AI処理にはある程度のメモリとCPU性能が必要なため、低スペックな端末では処理に時間がかかる場合がある</li>
+            </ul>
+          </div>
+
         </div>
       </section>
 
@@ -1064,38 +1073,58 @@
       </section>
 
       <!-- ================================
-           SECTION 5: 技術的工夫
+           SECTION 5: 設計の意図
       ================================ -->
       <section class="spec-section" id="sec-5" aria-labelledby="title-5">
         <div class="section-header">
           <span class="section-num">05</span>
-          <h2 class="section-title" id="title-5">技術的工夫（差別化ポイント）</h2>
+          <h2 class="section-title" id="title-5">設計の意図</h2>
         </div>
         <div class="section-body">
 
           <div class="accordion is-open" id="acc-5-1">
             <button class="accordion__trigger" aria-expanded="true" aria-controls="body-5-1">
               <div class="accordion__trigger-left">
-                <span class="accordion__tag accordion__tag--tech">セキュリティ</span>
-                <span class="accordion__title">完全クライアントサイドでの処理</span>
+                <span class="accordion__tag accordion__tag--rationale">設計判断</span>
+                <span class="accordion__title">なぜWebアプリケーションとして作ったか</span>
               </div>
               <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="accordion__body" id="body-5-1">
-              <p>従来はサーバー側で行うのが一般的だった重いAI背景透過処理を、WASM（ウェブアセンブリ：ブラウザ上でプログラムを高速実行する技術）などの最新技術を活用してブラウザ上で直接動作させ、送信に伴う情報漏洩リスクを排除しました。</p>
+              <p>LINEスタンプの画像加工を自動化するツールは、Pythonなどのプログラミング言語でスクリプトを書いて自分用に作り、作業を効率化しているエンジニアの事例もあります。</p>
+              <p>しかし、スタンプを自作したい人の多くは、プログラミングに馴染みのない個人クリエイターです。「自分が使えるツール」ではなく、「プログラミングを知らない人でもURLを開くだけで誰もが使えるツール」として公開することに意味があると考え、Webアプリケーションとして開発しました。</p>
+              <p>インストール不要、会員登録不要、完全無料。誰でも、今すぐ、ブラウザだけで使える——この手軽さを最優先にして設計しました。</p>
             </div>
           </div>
 
           <div class="accordion" id="acc-5-2">
             <button class="accordion__trigger" aria-expanded="false" aria-controls="body-5-2">
               <div class="accordion__trigger-left">
-                <span class="accordion__tag accordion__tag--tech">パフォーマンス</span>
-                <span class="accordion__title">確実なメモリ管理（メモリリークの防止）</span>
+                <span class="accordion__tag accordion__tag--rationale">設計判断</span>
+                <span class="accordion__title">なぜ3つのツールを別々に作ったか</span>
               </div>
               <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="accordion__body" id="body-5-2">
-              <p>背景透過画像のプレビュー表示用にブラウザが一時的に発行するURLは、使用後に破棄しないとブラウザのメモリ領域を圧迫し続けます。リセット時や次の処理開始時にメモリを解放する命令を実行し、ブラウザの動作が重くなるのを防いでいます。</p>
+              <p>背景透過・画像分割・画像リサイズの3機能を、1つのアプリにまとめるアプローチもあります。しかし、あえてそれぞれを独立した専用ツールとして開発しました。</p>
+              <p>理由は2つあります。</p>
+              <p><strong>1. 必要な機能だけをすぐ使える。</strong> 「今は背景透過だけしたい」という人が、分割やリサイズの画面に迷い込む必要がない。</p>
+              <p><strong>2. ツールごとに軽量で速い。</strong> 1つのアプリにすべてを詰め込むと、使わない機能のプログラムまで読み込まれ、動作が重くなる。</p>
+              <p>どちらも、「LINEスタンプを作りたいだけの人が、最短で目的を達成できるか？」という使う側の視点から決めた判断です。</p>
+            </div>
+          </div>
+
+          <div class="accordion" id="acc-5-3">
+            <button class="accordion__trigger" aria-expanded="false" aria-controls="body-5-3">
+              <div class="accordion__trigger-left">
+                <span class="accordion__tag accordion__tag--rationale">設計判断</span>
+                <span class="accordion__title">なぜこのアプリだけReact / Vite構成にしたか</span>
+              </div>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="accordion__body" id="body-5-3">
+              <p>他の2つのツール（画像分割・画像リサイズ）はHTML / CSS / JavaScriptだけで構築していますが、本ツールだけはReactとViteを採用しています。</p>
+              <p>これは、AI背景透過処理の特性によるものです。本ツールでは「AIモデルの読み込み中」「処理の実行中」「処理の完了」「エラー発生」など、画面の表示状態が複雑に切り替わります。AIコーディングツール（Antigravity）と開発を進める中で、この複雑な状態管理にはReactの仕組みが適しているという判断になり、採用しました。</p>
             </div>
           </div>
 
@@ -1166,41 +1195,19 @@
       </section>
 
       <!-- ================================
-           SECTION 7: 今後の改善案
+           SECTION 7: おわりに
       ================================ -->
       <section class="spec-section" id="sec-7" aria-labelledby="title-7">
         <div class="section-header">
           <span class="section-num">07</span>
-          <h2 class="section-title" id="title-7">今後の改善案</h2>
+          <h2 class="section-title" id="title-7">おわりに</h2>
         </div>
         <div class="section-body">
-
-          <div class="accordion is-open" id="acc-7-1">
-            <button class="accordion__trigger" aria-expanded="true" aria-controls="body-7-1">
-              <div class="accordion__trigger-left">
-                <span class="accordion__tag accordion__tag--future">将来</span>
-                <span class="accordion__title">複数画像の一括背景透過と一括ZIPダウンロード</span>
-              </div>
-              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="accordion__body" id="body-7-1">
-              <p>現在手動で1枚ずつ処理している画像を、複数まとめてドラッグ＆ドロップし、AIが順次処理を行って、最終的にZIP（複数のファイルを一つに圧縮したファイル形式）にまとめて一括保存できる機能の追加を検討しています。本機能の実装に向けて、すでにZIP圧縮ライブラリ（JSZip）の導入と検証を完了しており、現在は複数ファイルを処理するUI設計を進めています。</p>
-            </div>
+          <div style="background: var(--color-base); padding: 32px 24px; line-height: 2.0;">
+            <p style="margin-bottom: 16px;">本アプリは、AIコーディングツール「Antigravity」との対話を通じて開発しました。私自身はプログラミングの専門知識を持っていませんが、「どんなツールが必要か」「誰がどう使うか」「どういう使い心地にしたいか」という企画と設計を自分で考え、技術的な実装はAIと協力して形にしています。</p>
+            <p style="margin-bottom: 16px;">開発を通じて実感したのは、プロダクトの価値は「コードが書けること」だけでは決まらないということです。ユーザーが本当に困っている課題を見つけ、それをシンプルなUIに落とし込み、迷わず使える形に整える——その判断は、プログラミングとは別のスキルで成り立っています。</p>
+            <p>LINEスタンプを作りたい個人クリエイターが、技術的なハードルに阻まれずに創作活動に集中できること。そのための小さな道具として、このツールが役に立てば嬉しく思います。</p>
           </div>
-
-          <div class="accordion" id="acc-7-2">
-            <button class="accordion__trigger" aria-expanded="false" aria-controls="body-7-2">
-              <div class="accordion__trigger-left">
-                <span class="accordion__tag accordion__tag--future">将来</span>
-                <span class="accordion__title">背景の単色塗りつぶし・合成機能</span>
-              </div>
-              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="accordion__body" id="body-7-2">
-              <p>背景を透過させるだけでなく、任意の単色カラーで塗りつぶしたり、別の背景画像をアップロードして合成写真を生成したりできる機能の導入を視野に入れています。</p>
-            </div>
-          </div>
-
         </div>
       </section>
 
@@ -1243,21 +1250,41 @@
   // ======================================================
   // SIDEBAR ACTIVE HIGHLIGHT
   // ======================================================
-  const sections = document.querySelectorAll('.spec-section[id]');
+  const sections = Array.from(document.querySelectorAll('.spec-section[id]'));
   const navItems = document.querySelectorAll('.nav__item[id]');
 
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = entry.target.id.replace('sec-', '');
-        navItems.forEach(item => item.classList.remove('is-active'));
-        const active = document.getElementById('nav-' + id);
-        if (active) active.classList.add('is-active');
-      }
-    });
-  }, { rootMargin: '-20% 0px -70% 0px' });
+  function updateActiveSection() {
+    let currentId = '';
+    const scrollY = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const docHeight = document.documentElement.scrollHeight;
 
-  sections.forEach(s => observer.observe(s));
+    // ページ下端の場合は強制的に最後のセクションをアクティブ化
+    if (scrollY + windowHeight >= docHeight - 5) {
+      if (sections.length > 0) {
+        currentId = sections[sections.length - 1].id.replace('sec-', '');
+      }
+    } else {
+      // 画面上部から150px下の位置を基準に現在のセクションを判定
+      const offset = 150;
+      for (const section of sections) {
+        if (section.offsetTop - offset <= scrollY) {
+          currentId = section.id.replace('sec-', '');
+        } else {
+          break;
+        }
+      }
+    }
+
+    if (currentId) {
+      navItems.forEach(item => item.classList.remove('is-active'));
+      const active = document.getElementById('nav-' + currentId);
+      if (active) active.classList.add('is-active');
+    }
+  }
+
+  window.addEventListener('scroll', updateActiveSection);
+  updateActiveSection(); // 初期表示時
 
   // ======================================================
   // MOBILE UI CONTROL
