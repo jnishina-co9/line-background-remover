@@ -760,7 +760,7 @@
         <span class="nav__item-num">04</span>UI / UX の工夫
       </a>
       <a class="nav__item" href="#sec-5" id="nav-5">
-        <span class="nav__item-num">05</span>設計の意図
+        <span class="nav__item-num">05</span>技術的工夫
       </a>
 
       <div class="nav__section-label">Architecture</div>
@@ -1074,58 +1074,56 @@
       </section>
 
       <!-- ================================
-           SECTION 5: 設計の意図
+           SECTION 5: 技術的工夫
       ================================ -->
       <section class="spec-section" id="sec-5" aria-labelledby="title-5">
         <div class="section-header">
           <span class="section-num">05</span>
-          <h2 class="section-title" id="title-5">設計の意図</h2>
+          <h2 class="section-title" id="title-5">技術的工夫（差別化ポイント）</h2>
         </div>
         <div class="section-body">
 
           <div class="accordion is-open" id="acc-5-1">
             <button class="accordion__trigger" aria-expanded="true" aria-controls="body-5-1">
               <div class="accordion__trigger-left">
-                <span class="accordion__tag accordion__tag--rationale">設計判断</span>
-                <span class="accordion__title">なぜWebアプリケーションとして作ったか</span>
+                <span class="accordion__tag accordion__tag--rationale">アクセシビリティ</span>
+                <span class="accordion__title">誰でも即座に使えるWebアプリ形態での提供</span>
               </div>
               <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="accordion__body" id="body-5-1">
-              <p>LINEスタンプの画像加工を自動化するツールは、Pythonなどのプログラミング言語でスクリプトを書いて自分用に作り、作業を効率化しているエンジニアの事例もあります。</p>
-              <p>しかし、スタンプを自作したい人の多くは、プログラミングに馴染みのない個人クリエイターです。「自分が使えるツール」ではなく、「プログラミングを知らない人でもURLを開くだけで誰もが使えるツール」として公開することに意味があると考え、Webアプリケーションとして開発しました。</p>
-              <p>インストール不要、会員登録不要、完全無料。誰でも、今すぐ、ブラウザだけで使える——この手軽さを最優先にして設計しました。</p>
+              <p>LINEスタンプを制作するクリエイターが、特別なツールのインストールや面倒な会員登録なしに、迷わず今すぐ作業を開始できるようWebアプリケーション形式で開発しました。</p>
+              <p>スマートフォンやPCのブラウザさえあれば、専門知識がなくてもURLを開くだけで「誰でも、今すぐ、その場で背景透過を行える」という、アクセシビリティと手軽さを実現しています。</p>
             </div>
           </div>
 
           <div class="accordion" id="acc-5-2">
             <button class="accordion__trigger" aria-expanded="false" aria-controls="body-5-2">
               <div class="accordion__trigger-left">
-                <span class="accordion__tag accordion__tag--rationale">設計判断</span>
-                <span class="accordion__title">なぜ3つのツールを別々に作ったか</span>
+                <span class="accordion__tag accordion__tag--rationale">UX・パフォーマンス</span>
+                <span class="accordion__title">独立ツールとして機能を分散</span>
               </div>
               <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="accordion__body" id="body-5-2">
-              <p>背景透過・画像分割・画像リサイズの3機能を、1つのアプリにまとめるアプローチもあります。しかし、あえてそれぞれを独立した専用ツールとして開発しました。</p>
-              <p>理由は2つあります。</p>
-              <p><strong>1. 必要な機能だけをすぐ使える:</strong>  「今は背景透過だけしたい」という人が、分割やリサイズの画面に迷い込む必要がない</p>
-              <p><strong>2. ツールごとに軽量で速い:</strong>  1つのアプリにすべてを詰め込むと、使わない機能のプログラムまで読み込まれ、動作が重くなる</p>
-              <p>どちらも、「LINEスタンプを作りたいだけの人が、最短で目的を達成できるか？」という使う側の視点から決めた判断です。</p>
+              <p>背景透過・画像分割・画像リサイズの3機能を1つにまとめず、あえて独立した専用ツールとして分散開発しました。これにより、以下の工夫を実現しています。</p>
+              <p><strong>1. 迷わせない操作性：</strong> 背景透過「だけ」したいユーザーが他の機能に迷わずに、開いてすぐに目的の作業を開始できるシンプルな画面構造にしました。</p>
+              <p><strong>2. 軽量・高速な読み込み：</strong> 使う機能のプログラムのみが読み込まれるため、余計なコード処理が発生せず、ページの起動や動作が軽量です。</p>
+              <p>クリエイターが、最短時間でストレスなく目的を達成することを目指した、効率優先の設計です。</p>
             </div>
           </div>
 
           <div class="accordion" id="acc-5-3">
             <button class="accordion__trigger" aria-expanded="false" aria-controls="body-5-3">
               <div class="accordion__trigger-left">
-                <span class="accordion__tag accordion__tag--rationale">設計判断</span>
-                <span class="accordion__title">なぜこのアプリだけReact / Vite構成にしたか</span>
+                <span class="accordion__tag accordion__tag--rationale">状態制御</span>
+                <span class="accordion__title">React/Viteによる高度な状態管理と高速動作</span>
               </div>
               <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="accordion__body" id="body-5-3">
-              <p>他の2つのツール（画像分割・画像リサイズ）はHTML / CSS / JavaScriptで構築していますが、このツールはReactとViteを採用しています。</p>
-              <p>これは、AI背景透過処理の特性によるものです。Antigravityと開発を進める中で、「AIモデルの読み込み中」「処理の実行中」「処理の完了」「エラー発生」など、画面の表示状態が複雑に切り替わる状態管理にはReactの仕組みが適しているという判断になり、採用しました。</p>
+              <p>本ツールは、他2つのツール（画像分割・画像リサイズ）と異なり、AI背景透過ライブラリの処理制御のためにReactとViteを採用しています。</p>
+              <p>AIモデルのダウンロード中、処理の実行中、成功、エラーなど、リアルタイムに変化する複雑なアプリ状態をReactで緻密にコントロールすることで、ユーザーにストレスを感じさせないスムーズなUI表示の切り替えを実現しました。また、Viteによる最適化で、AIを動かす重量級のフロントエンド環境でも俊敏な起動速度を保つ工夫を施しています。</p>
             </div>
           </div>
 
@@ -1206,7 +1204,7 @@
         <div class="section-body">
           <div style="background: var(--color-base); padding: 32px 24px; line-height: 2.0;">
             <p style="margin-bottom: 16px;">本アプリは、Antigravityで個人開発しました。私自身はプログラミングの専門知識を持っていませんが、「どんなツールが必要か」「誰がどう使うか」「どういう使い心地にしたいか」という企画と設計を自分で考え、技術的な実装はAIと協力して形にしています。</p>
-            <p style="margin-bottom: 16px;">開発を通じて実感したのは、プロダクトの価値は「コードが書けること」だけでは決まらないということです。ユーザーが困っている課題を見つけ、それをシンプルなUIに落とし込み、迷わず使える形に整える——その判断は、プログラミングとは別のスキルで成り立っていると考えています。</p>
+            <p style="margin-bottom: 16px;">開発を通じて実感したのは、プロダクトの価値はコードが書けることだけでは決まらないということです。ユーザーが困っている課題を見つけ、それをシンプルなUIに落とし込み、迷わず使える形に整える——その判断は、プログラミングとは別のスキルで成り立っていると考えています。</p>
             <p>LINEスタンプを作りたい個人クリエイターが、技術的なハードルに阻まれずに創作活動に集中できること。そのための小さな道具として、このツールが役に立てば嬉しく思います。</p>
           </div>
         </div>
