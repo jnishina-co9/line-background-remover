@@ -38,3 +38,15 @@ h1,h2,footer{font-family:"Outfit","Noto Sans JP",sans-serif}
 @media(max-width:767px){.layout-section{padding:24px}}
 
 .layout-section #original-status{margin:0 0 16px}
+
+/* 3. 確認して保存の行揃え・余白調整（8pxグリッド） */
+.heading-row{align-items:center}
+.heading-row h2{margin:0}
+.heading-row label{display:inline-flex;align-items:center;gap:8px}
+select{padding:8px 16px}
+select:focus,select:focus-visible{outline:none}
+
+.color-row{align-items:center}
+input[type=text]{height:48px;width:128px;padding:0 16px;text-align:center}
+.heading-row{margin-bottom:24px}
+.layout-section #status{margin:0 0 16px}

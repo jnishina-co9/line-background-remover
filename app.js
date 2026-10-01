@@ -1,4 +1,4 @@
-/* No imports or network requests: works directly from index.html. */
+﻿/* No imports or network requests: works directly from index.html. */
 'use strict';
 
 // Smooth color-distance key; decontaminate only the partially transparent edge.
@@ -51,7 +51,7 @@ if (typeof document !== 'undefined') {
         result.dataset.loaded = 'true';
         $('result-preview-panel').hidden = false;
         $('save').disabled = false;
-        $('status').textContent = `背景を除去しました。${source.width} × ${source.height} px ／ 透過PNGで保存できます。`;
+        $('status').textContent = '背景を除去しました。透過PNGで保存できます。';
       } catch (error) {
         $('status').textContent = '画像の処理に失敗しました。大きすぎる画像は縮小して、もう一度選択してください。';
         console.error(error);
@@ -156,3 +156,4 @@ if (typeof document !== 'undefined') {
     }, 'image/png');
   });
 }
+
