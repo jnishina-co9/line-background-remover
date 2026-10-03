@@ -1,8 +1,8 @@
-﻿/* No imports or network requests: works directly from index.html. */
+/* No imports or network requests: works directly from index.html. */
 'use strict';
 
-// Smooth color-distance key; decontaminate only the partially transparent edge.
-function removeColor(source, key, tolerance, softness, correction) {
+// Smooth color-distance key, followed by local green-fringe correction.
+function removeColor(source, key, tolerance, softness, correction, width = 0) {
   const out = new Uint8ClampedArray(source);
   for (let i = 0; i < out.length; i += 4) {
     if (!source[i + 3]) continue;
@@ -15,6 +15,57 @@ function removeColor(source, key, tolerance, softness, correction) {
       for (let c = 0; c < 3; c++) {
         const clean = Math.max(0, Math.min(255, (source[i + c] - key[c] * (1 - alpha)) / alpha));
         out[i + c] = source[i + c] + (clean - source[i + c]) * correction;
+      }
+    }
+  }
+  return correctGreenEdges(out, key, correction, width);
+}
+
+// Correct green mixed into the foreground, including fully opaque edge pixels.
+// Read from a fixed snapshot so corrections cannot spread into the subject.
+function correctGreenEdges(pixels, key, correction, width) {
+  if (correction <= 0 || !Number.isInteger(width) || width <= 0 ||
+      pixels.length % (width * 4) !== 0 || key[1] - Math.max(key[0], key[2]) < 30) return pixels;
+  const height = pixels.length / (width * 4);
+  const out = new Uint8ClampedArray(pixels);
+  const strength = Math.min(1, correction);
+  const edgeRadius = 3, referenceRadius = 5;
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const i = (y * width + x) * 4;
+      if (!pixels[i + 3] || pixels[i + 1] - Math.max(pixels[i], pixels[i + 2]) <= 3) continue;
+      let touchesTransparency = false, best = -1, bestScore = Infinity;
+      for (let ny = Math.max(0, y - referenceRadius); ny <= Math.min(height - 1, y + referenceRadius); ny++) {
+        for (let nx = Math.max(0, x - referenceRadius); nx <= Math.min(width - 1, x + referenceRadius); nx++) {
+          const j = (ny * width + nx) * 4;
+          if (Math.abs(nx - x) <= edgeRadius && Math.abs(ny - y) <= edgeRadius && pixels[j + 3] <= 16) {
+            touchesTransparency = true;
+          }
+          // Use a nearby opaque, non-green pixel as the foreground reference.
+          if (pixels[j + 3] < 240 || pixels[j + 1] - Math.max(pixels[j], pixels[j + 2]) > 3) continue;
+          let dot = 0, lengthSquared = 0;
+          for (let c = 0; c < 3; c++) {
+            const direction = key[c] - pixels[j + c];
+            dot += (pixels[i + c] - pixels[j + c]) * direction;
+            lengthSquared += direction * direction;
+          }
+          if (lengthSquared === 0) continue;
+          const mix = dot / lengthSquared;
+          if (mix <= 0 || mix >= 0.95) continue;
+          let error = 0;
+          for (let c = 0; c < 3; c++) {
+            const expected = pixels[j + c] + mix * (key[c] - pixels[j + c]);
+            error += (pixels[i + c] - expected) ** 2;
+          }
+          // Reject unrelated colors rather than recoloring every green edge.
+          if (error > 60 ** 2) continue;
+          const score = error + 4 * ((nx - x) ** 2 + (ny - y) ** 2);
+          if (score < bestScore) { bestScore = score; best = j; }
+        }
+      }
+      if (!touchesTransparency || best < 0) continue;
+      for (let c = 0; c < 3; c++) {
+        out[i + c] = pixels[i + c] + (pixels[best + c] - pixels[i + c]) * strength;
       }
     }
   }
@@ -40,13 +91,13 @@ if (typeof document !== 'undefined') {
     $('save').disabled = true;
     if (!source) return;
     if (!/^#[\da-f]{6}$/i.test($('hex').value)) {
-      $('status').textContent = '色コードは #5AFF19 のように # と6桁の英数字で入力してください。';
+      $('status').textContent = '色コードは #00B900 のように # と6桁の英数字で入力してください。';
       return;
     }
     $('status').textContent = '背景を除去しています…';
     timer = setTimeout(() => {
       try {
-        const pixels = removeColor(source.data, rgb($('hex').value), 80, 100, 1);
+        const pixels = removeColor(source.data, rgb($('hex').value), 80, 100, 1, source.width);
         resultCtx.putImageData(new ImageData(pixels, source.width, source.height), 0, 0);
         result.dataset.loaded = 'true';
         $('result-preview-panel').hidden = false;
