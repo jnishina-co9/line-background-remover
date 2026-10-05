@@ -50,3 +50,9 @@ select:focus,select:focus-visible{outline:none}
 input[type=text]{height:48px;width:128px;padding:0 16px;text-align:center}
 .heading-row{margin-bottom:24px}
 .layout-section #status{margin:0 0 16px}
+#save,#reset-top{width:100%;padding:24px 48px;display:flex;align-items:center;justify-content:center;gap:12px;font-size:18px;font-weight:700;line-height:1.6}
+#save{margin-top:32px}
+#reset-top{margin-top:16px;background:#fff;color:#00c9a7}
+#save svg,#reset-top svg{width:24px;height:24px;flex-shrink:0}
+#reset-top[hidden]{display:none}
+@media(max-width:767px){#save,#reset-top{padding:18px 32px;font-size:16px}}

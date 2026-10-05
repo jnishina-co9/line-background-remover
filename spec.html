@@ -796,7 +796,7 @@
         </div>
         <div class="meta-badge">
           <span class="meta-badge__label">Tech Stack</span>
-          <span class="meta-badge__value">React / CSS / Vite</span>
+          <span class="meta-badge__value">HTML / CSS / JavaScript</span>
         </div>
         <div class="meta-badge">
           <span class="meta-badge__label">Updated</span>
@@ -823,15 +823,14 @@
             <tbody>
               <tr>
                 <th>アプリ概要</th>
-                <td>ブラウザ上で画像の被写体をAIが自動認識し、背景をきれいに透過・削除できる完全無料のWebツール</td>
+                <td>画像上で背景色を選び、その色を透過してPNGで保存できる完全無料のWebツール</td>
               </tr>
               <tr>
                 <th>技術スタック</th>
                 <td>
-                  <span class="tech-tag">React</span>
+                  <span class="tech-tag">HTML</span>
                   <span class="tech-tag">CSS</span>
-                  <span class="tech-tag">Vite</span>
-                  <span class="tech-tag">@imgly/background-removal</span>
+                  <span class="tech-tag">JavaScript</span>
                 </td>
               </tr>
               <tr>
@@ -890,7 +889,7 @@
               <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="accordion__body" id="body-1-1">
-              <p>アップロードした画像をAIが自動で解析し、人物や物といった被写体だけを切り抜いて背景を透過させたPNG形式の画像を作成できる、インストール不要の完全無料ツールです。</p>
+              <p>アップロードした画像上で背景色を選び、その色を透過させたPNG画像を作成できる、インストール不要の完全無料ツールです。</p>
             </div>
           </div>
 
@@ -906,6 +905,7 @@
               <p><strong>背景：</strong> LINEスタンプを販売するには、すべての背景を透過させたPNG画像を用意する必要があります。しかし、1セットあたり最大40枚もの画像を一枚ずつ丁寧に切り抜く作業は、自作スタンプを作りたい個人クリエイターにとって、多くの時間と手間がかかる高いハードルとなっています。</p>
               <p><strong>課題：</strong> 既存の多くの背景削除ツールは、外部サーバーへの画像のアップロードが必要であり、大切な写真や未公開のデザインデータが漏洩するセキュリティ面のリスクや、無料版での画質劣化、処理枚数制限などの課題がありました。</p>
               <p><strong>解決策：</strong> そこで、外部サーバーへ画像を一切送信せず、ユーザーの手元の端末のブラウザ上だけで背景削除を完結させることで、「外部送信なしによるプライバシー保護」「高画質な透過処理」「無制限かつ完全無料」を同時に実現しました。</p>
+              <p><strong>今回の改修：</strong> 以前はAIが被写体を自動認識する方式でしたが、薄い緑のフチが残るなど、仕上がりに改善の余地がありました。Codexの提案を参考に、画像上で背景色を選んで透過する方式へ変更し、輪郭に残る色の補正や処理中の操作性も見直しました。</p>
             </div>
           </div>
 
@@ -934,22 +934,12 @@
           <div style="background: var(--color-base); padding: 32px 24px; margin-bottom: 32px;">
             <table class="app-card__table">
               <tbody>
-                <tr>
-                  <th>React</th>
-                  <td>画面の一部を効率良く書き換えるための部品化ライブラリ</td>
-                </tr>
+                <tr><th>HTML</th><td>画面の内容や構造を記述</td></tr>
                 <tr>
                   <th>CSS</th>
                   <td>ウェブページのデザイン・スタイルを指定する言語</td>
                 </tr>
-                <tr>
-                  <th>Vite</th>
-                  <td>プログラムを高速に組み立てて動かす開発ツール</td>
-                </tr>
-                <tr>
-                  <th>@imgly/background-removal</th>
-                  <td>AIがブラウザ上で背景透過処理を行うライブラリ（画像データを外部サーバーに送信せず、端末内だけでAI処理を完結させる）</td>
-                </tr>
+                <tr><th>JavaScript</th><td>背景色の判定、透過処理、画面操作を実行</td></tr>
               </tbody>
             </table>
           </div>
@@ -963,8 +953,7 @@
           <div class="spec-block spec-block--constraint">
             <div class="spec-block__label">ご利用時の注意点</div>
             <ul>
-              <li>初回アクセス時のみ、AIモデル（約40MB）のダウンロードが発生する（2回目以降はブラウザにキャッシュされるため高速に動作する）</li>
-              <li>高度なAI処理をご使用の端末内で安全に完結させる仕組み上、デバイスの性能（CPUやメモリ等）によって処理時間に差が生じる場合がある</li>
+              <li>画像サイズやご使用の端末の性能によって、処理時間に差が生じる場合がある</li>
             </ul>
           </div>
 
@@ -998,13 +987,21 @@
             <button class="accordion__trigger" aria-expanded="false" aria-controls="body-3-2">
               <div class="accordion__trigger-left">
                 <span class="accordion__tag accordion__tag--feature">機能</span>
-                <span class="accordion__title">AI自動背景透過処理＆リアルタイムプレビュー</span>
+                <span class="accordion__title">背景色を選んで透過＆プレビュー</span>
               </div>
               <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="accordion__body" id="body-3-2">
-              <p>画像をアップロードすると、AIが被写体を瞬時に自動識別し、輪郭をなめらかに切り抜いて背景部分を完全に透過させたプレビュー画像をその場で表示します。</p>
+              <p>画像上をクリックするか、色の選択欄で消したい背景色を指定します。透過結果を確認用の背景に重ねてプレビューできます。</p>
             </div>
+          </div>
+
+          <div class="accordion" id="acc-3-4">
+            <button class="accordion__trigger" aria-expanded="false" aria-controls="body-3-4">
+              <div class="accordion__trigger-left"><span class="accordion__tag accordion__tag--feature">機能</span><span class="accordion__title">輪郭に残る色の補正</span></div>
+              <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="accordion__body" id="body-3-4"><p>背景色が混ざって残る輪郭部分を検出し、周囲の色を参考に補正します。薄い緑のフチなど、背景色が残る問題の改善を目指しています。</p></div>
           </div>
 
           <div class="accordion" id="acc-3-3">
@@ -1119,13 +1116,12 @@
             <button class="accordion__trigger" aria-expanded="false" aria-controls="body-5-3">
               <div class="accordion__trigger-left">
                 <span class="accordion__tag accordion__tag--rationale">状態制御</span>
-                <span class="accordion__title">React/Viteによる高度な状態管理と高速動作</span>
+                <span class="accordion__title">処理中の操作性への配慮</span>
               </div>
               <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="accordion__body" id="body-5-3">
-              <p>本ツールは、他2つのツール（画像分割・画像リサイズ）と異なり、AI背景透過ライブラリの処理制御のためにReactとViteを採用しています。</p>
-              <p>AIモデルのダウンロード中、処理の実行中、成功、エラーなど、リアルタイムに変化する複雑なアプリ状態をReactで緻密にコントロールすることで、ユーザーにストレスを感じさせないスムーズなUI表示の切り替えを実現しました。また、Viteによる最適化で、AIを動かす重量級のフロントエンド環境でも俊敏な起動速度を保つ工夫を施しています。</p>
+              <p>画像処理を画面の操作と切り分け、対応ブラウザでは別スレッドで実行します。別スレッドが使えない場合も処理を小分けにして画面へ制御を戻し、色や画像を変更した際には古い処理を取り消せるようにしています。</p>
             </div>
           </div>
 
@@ -1158,8 +1154,8 @@
               <div class="flow-step__line"></div>
             </div>
             <div class="flow-step__content">
-              <div class="flow-step__title">AIモデルのロード</div>
-              <div class="flow-step__desc">背景透過を行うAIプログラムを、ブラウザの裏側で自動的に読み込む</div>
+              <div class="flow-step__title">背景色の指定</div>
+              <div class="flow-step__desc">画像上をクリックするか、色の選択欄で消したい背景色を指定</div>
             </div>
           </div>
           <div class="flow-step">
@@ -1168,8 +1164,8 @@
               <div class="flow-step__line"></div>
             </div>
             <div class="flow-step__content">
-              <div class="flow-step__title">画像の解析と背景透過処理</div>
-              <div class="flow-step__desc">AIが画像を解析して被写体の輪郭を自動で切り抜き、背景を取り除いたPNG形式の画像データを生成</div>
+              <div class="flow-step__title">背景透過と輪郭補正</div>
+              <div class="flow-step__desc">指定色を透過し、輪郭に残る背景色を補正してプレビューを表示</div>
             </div>
           </div>
           <div class="flow-step">
