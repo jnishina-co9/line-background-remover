@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<title>仕様書 | BACKGROUND REMOVER</title>
+<title>仕様書 v2.0 | BACKGROUND REMOVER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
@@ -16,17 +16,15 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    /* 4色パレット（Junko指定） */
-    --color-main:    #007E66;   /* メインカラー（ダークグリーン） */
-    --color-base:    #FFFFFF;   /* ベースカラー（白） */
-    --color-sub:     #E7EAE7;   /* サブカラー（ライトグレーグリーン） */
-    --color-accent:  #F25A86;   /* アクセントカラー（ピンク） */
-    --color-text:    #333333;   /* テキストカラー */
-    /* 派生色（4色から計算） */
-    --color-text-sub:      #6B7B6B;   /* --color-sub を暗くした補助テキスト */
-    --color-border:        #D4D9D4;   /* --color-sub を少し濃くしたボーダー */
-    --color-main-light:    #E8F4F1;   /* --color-main の極薄（前提ブロック背景） */
-    --color-accent-light:  #FDEEF4;   /* --color-accent の極薄（将来ブロック背景） */
+    /* re-spec.html のモノトーンパレット */
+    --color-main:    #111111;
+    --color-base:    #FFFFFF;
+    --color-sub:     #F3F4F6;
+    --color-accent:  #4B5563;
+    --color-text:    #1F2937;
+    --color-text-sub:   #6B7280;
+    --color-border:     #E5E7EB;
+    --color-main-light: #F3F4F6;
     --font-base:     'Noto Sans JP', 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
     --font-accent:   'Outfit', 'Segoe UI', -apple-system, sans-serif;
     --sidebar-width: 260px;
@@ -128,7 +126,7 @@
 
   .nav__item:hover {
     background: var(--color-sub);
-    color: var(--color-text);
+    color: var(--color-main);
   }
 
   .nav__item.is-active {
@@ -171,7 +169,7 @@
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.2em;
-    color: rgba(255,255,255,0.7);
+    color: #9CA3AF;
     text-transform: uppercase;
     margin-bottom: 12px;
   }
@@ -187,7 +185,7 @@
 
   .page-header__subtitle {
     font-size: 16px;
-    color: rgba(255,255,255,0.8);
+    color: #D1D5DB;
     margin-top: 8px;
     font-weight: 500;
   }
@@ -208,7 +206,7 @@
   .meta-badge__label {
     font-size: 12px;
     letter-spacing: 0.12em;
-    color: rgba(255,255,255,0.6);
+    color: #9CA3AF;
     text-transform: uppercase;
     font-weight: 600;
   }
@@ -280,7 +278,7 @@
   .tech-tag {
     display: inline-block;
     background: var(--color-sub);
-    color: var(--color-text);
+    color: var(--color-main);
     font-size: 14px;
     padding: 3px 10px;
     font-family: var(--font-accent);
@@ -388,7 +386,7 @@
     width: 20px;
     height: 20px;
     flex-shrink: 0;
-    color: var(--color-accent);
+    color: var(--color-main);
     transition: transform 0.25s ease;
   }
 
@@ -428,7 +426,7 @@
   .spec-block {
     padding: 16px 24px;
     background: transparent;
-    border-left: 4px solid var(--color-text);
+    border-left: 4px solid var(--color-main);
   }
 
   /* アコーディオンの直後に配置される縦線ブロックに上部余白を追加 */
@@ -444,7 +442,7 @@
     letter-spacing: 0.15em;
     text-transform: uppercase;
     margin-bottom: 10px;
-    color: var(--color-text);
+    color: var(--color-main);
   }
 
   .spec-block ul {
@@ -683,7 +681,7 @@
     right: 16px;
     width: 44px;
     height: 44px;
-    background: var(--color-text);
+    background: var(--color-main);
     color: #fff;
     align-items: center;
     justify-content: center;
@@ -737,7 +735,7 @@
   <aside class="sidebar" id="sidebar" role="navigation" aria-label="目次">
     <div class="sidebar__brand">
       <a href="#" class="sidebar__app-name">BACKGROUND REMOVER</a>
-      <div class="sidebar__doc-type">プロダクト仕様書 v1.0</div>
+      <div class="sidebar__doc-type">プロダクト仕様書 v2.0</div>
     </div>
 
     <nav class="sidebar__nav">
@@ -788,7 +786,7 @@
       <div class="page-header__meta">
         <div class="meta-badge">
           <span class="meta-badge__label">Version</span>
-          <span class="meta-badge__value">v1.0</span>
+          <span class="meta-badge__value">v2.0</span>
         </div>
         <div class="meta-badge">
           <span class="meta-badge__label">Status</span>
@@ -823,7 +821,7 @@
             <tbody>
               <tr>
                 <th>アプリ概要</th>
-                <td>画像上で背景色を選び、その色を透過してPNGで保存できる完全無料のWebツール</td>
+                <td>画像上で背景色を選び、その色を透過してPNGで保存できるWebツール</td>
               </tr>
               <tr>
                 <th>技術スタック</th>
@@ -835,7 +833,7 @@
               </tr>
               <tr>
                 <th>最大の特徴</th>
-                <td>完全クライアントサイド処理。画像データを外部サーバーに一切送信しないため安全</td>
+                <td>画像の解析・透過・保存はブラウザ内で処理。画像データはアプリのサーバーへ送信しない</td>
               </tr>
               <tr>
                 <th>公開 URL</th>
@@ -855,8 +853,8 @@
             <div class="spec-block__label">前提条件</div>
             <ul>
               <li>モダンブラウザ（Google ChromeやSafari、Edgeなどの最新のインターネット閲覧ソフト）で動作</li>
-              <li>インストール不要・サーバー不要</li>
-              <li>完全無料・ログイン不要</li>
+              <li>アプリのインストールやログインは不要</li>
+              <li>画像処理にサーバーを使用しない（ページの表示にはインターネット接続が必要）</li>
             </ul>
           </div>
           <div class="spec-block spec-block--constraint">
@@ -889,7 +887,7 @@
               <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="accordion__body" id="body-1-1">
-              <p>アップロードした画像上で背景色を選び、その色を透過させたPNG画像を作成できる、インストール不要の完全無料ツールです。</p>
+              <p>画像上で背景色を選び、その色を透過させたPNG画像を作成できる、インストール不要のWebツールです。画像の読み込みから保存まで、画像処理はブラウザ内で行います。</p>
             </div>
           </div>
 
@@ -904,8 +902,8 @@
             <div class="accordion__body" id="body-1-2">
               <p><strong>背景：</strong> LINEスタンプを販売するには、すべての背景を透過させたPNG画像を用意する必要があります。しかし、1セットあたり最大40枚もの画像を一枚ずつ丁寧に切り抜く作業は、自作スタンプを作りたい個人クリエイターにとって、多くの時間と手間がかかる高いハードルとなっています。</p>
               <p><strong>課題：</strong> 既存の多くの背景削除ツールは、外部サーバーへの画像のアップロードが必要であり、大切な写真や未公開のデザインデータが漏洩するセキュリティ面のリスクや、無料版での画質劣化、処理枚数制限などの課題がありました。</p>
-              <p><strong>解決策：</strong> そこで、外部サーバーへ画像を一切送信せず、ユーザーの手元の端末のブラウザ上だけで背景削除を完結させることで、「外部送信なしによるプライバシー保護」「高画質な透過処理」「無制限かつ完全無料」を同時に実現しました。</p>
-              <p><strong>今回の改修：</strong> 以前はAIが被写体を自動認識する方式でしたが、薄い緑のフチが残るなど、仕上がりに改善の余地がありました。Codexの提案を参考に、画像上で背景色を選んで透過する方式へ変更し、輪郭に残る色の補正や処理中の操作性も見直しました。</p>
+              <p><strong>解決策：</strong> 画像の処理をユーザーの端末内で完結させ、画像データをアプリのサーバーへ送信しない構成にしました。処理後は透過PNGとして保存できます。</p>
+              <p><strong>今回の改修：</strong> AIモデルで被写体を切り抜く方式から、指定した背景色との色差を使って透過する方式へ変更しました。画像四隅からの背景色推定、画像上のクリックによる色取得、輪郭に残る色の補正を加え、処理中の画面応答性と画像変更時の安全性も改善しています。</p>
             </div>
           </div>
 
@@ -974,12 +972,12 @@
             <button class="accordion__trigger" aria-expanded="true" aria-controls="body-3-1">
               <div class="accordion__trigger-left">
                 <span class="accordion__tag accordion__tag--feature">機能</span>
-                <span class="accordion__title">ドラッグ＆ドロップによる画像選択</span>
+                <span class="accordion__title">画像の選択と背景色の自動推定</span>
               </div>
               <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="accordion__body" id="body-3-1">
-              <p>枠内に画像を直接ドラッグ＆ドロップするだけで、選択した画像が即座にプレビューされ、アップロードが完了します。</p>
+              <p>クリックして画像を選ぶか、枠内にドラッグ＆ドロップして読み込みます。画像データはブラウザ内で読み込み、画像の四隅の色から背景色を推定して初期値に設定します。</p>
             </div>
           </div>
 
@@ -987,12 +985,12 @@
             <button class="accordion__trigger" aria-expanded="false" aria-controls="body-3-2">
               <div class="accordion__trigger-left">
                 <span class="accordion__tag accordion__tag--feature">機能</span>
-                <span class="accordion__title">背景色を選んで透過＆プレビュー</span>
+                <span class="accordion__title">スポイト・色指定とリアルタイムプレビュー</span>
               </div>
               <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="accordion__body" id="body-3-2">
-              <p>画像上をクリックするか、色の選択欄で消したい背景色を指定します。透過結果を確認用の背景に重ねてプレビューできます。</p>
+              <p>画像読み込み前の背景色の初期値は #00FF00 です。元画像の背景をクリックして色を取得するほか、色選択欄やカラーコード入力でも指定できます。色を変更すると透過結果を再計算し、市松模様・白・黒の背景を切り替えて仕上がりを確認できます。</p>
             </div>
           </div>
 
@@ -1001,7 +999,7 @@
               <div class="accordion__trigger-left"><span class="accordion__tag accordion__tag--feature">機能</span><span class="accordion__title">輪郭に残る色の補正</span></div>
               <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
-            <div class="accordion__body" id="body-3-4"><p>背景色が混ざって残る輪郭部分を検出し、周囲の色を参考に補正します。薄い緑のフチなど、背景色が残る問題の改善を目指しています。</p></div>
+            <div class="accordion__body" id="body-3-4"><p>色差に応じて境界をなめらかに透過し、背景色が混ざった輪郭部分は近くの元画像の色を参照して補正します。緑系の背景では緑かぶりを抑え、イラストの輪郭を保ちやすくします。</p></div>
           </div>
 
           <div class="accordion" id="acc-3-3">
@@ -1013,7 +1011,7 @@
               <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="accordion__body" id="body-3-3">
-              <p>透過処理された高品質なPNG形式の画像を、ワンクリックでローカル環境へ保存できます。</p>
+              <p>透過結果をPNG形式で保存できます。ファイル名には「_nobg」が付き、元画像を残したまま端末へダウンロードされます。処理が完了するまで保存ボタンは使えないため、古い結果を誤って保存しにくい設計です。</p>
             </div>
           </div>
 
@@ -1034,12 +1032,12 @@
             <button class="accordion__trigger" aria-expanded="true" aria-controls="body-4-1">
               <div class="accordion__trigger-left">
                 <span class="accordion__tag accordion__tag--design">デザイン</span>
-                <span class="accordion__title">3色ミニマリズムデザイン</span>
+                <span class="accordion__title">作業の順番が伝わるステップ画面</span>
               </div>
               <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="accordion__body" id="body-4-1">
-              <p>使用する色を、白、エメラルドグリーン、明るいグレーの3色だけに制限。枠線や影、角丸を一切使用せず、背景色と文字の配置のみで、現代的で洗練されたデザインを実現しました。</p>
+              <p>「1. 画像を選択」「2. 背景色を指定」「3. 確認して保存」の順に画面を構成し、次に行う操作が分かりやすいようにしています。白を基調に、緑のアクセントと明確な入力欄・ボタンを使い、画像と設定を見分けやすくしています。</p>
             </div>
           </div>
 
@@ -1052,7 +1050,7 @@
               <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="accordion__body" id="body-4-2">
-              <p>見出しに「1. 画像を選択」「2. 変換結果」と番号を振り、ユーザーが上から順番に操作するだけで、直感的かつスムーズに目的の処理を達成できるよう設計しています。</p>
+              <p>元画像と透過後の画像を並べて確認でき、確認用背景も切り替えられます。色コードの入力欄、処理状況の案内、無効状態の保存ボタンにより、色指定や保存のタイミングを判断しやすくしています。</p>
             </div>
           </div>
 
@@ -1065,7 +1063,7 @@
               <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="accordion__body" id="body-4-3">
-              <p>PCの大画面では左右に並ぶレイアウトも、スマートフォンのような画面の狭い端末では自動的に縦1列に並び替わるようにし、どのデバイスからアクセスしても快適に操作できるよう最適化しました。</p>
+              <p>画面幅に合わせて入力欄やプレビューが配置されるレスポンシブ画面です。ファイル選択はタップでも利用でき、画像上をタップして背景色を選べます。</p>
             </div>
           </div>
 
@@ -1078,7 +1076,7 @@
       <section class="spec-section" id="sec-5" aria-labelledby="title-5">
         <div class="section-header">
           <span class="section-num">05</span>
-          <h2 class="section-title" id="title-5">技術的工夫（差別化ポイント）</h2>
+          <h2 class="section-title" id="title-5">技術的な工夫</h2>
         </div>
         <div class="section-body">
 
@@ -1086,13 +1084,13 @@
             <button class="accordion__trigger" aria-expanded="true" aria-controls="body-5-1">
               <div class="accordion__trigger-left">
                 <span class="accordion__tag accordion__tag--rationale">アクセシビリティ</span>
-                <span class="accordion__title">誰でも即座に使えるWebアプリ形態での提供</span>
+                <span class="accordion__title">画像を端末内で処理</span>
               </div>
               <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="accordion__body" id="body-5-1">
-              <p>LINEスタンプを制作するクリエイターが、特別なツールのインストールや面倒な会員登録なしに、迷わず今すぐ作業を開始できるようWebアプリケーション形式で開発しました。</p>
-              <p>スマートフォンやPCのブラウザさえあれば、専門知識がなくてもURLを開くだけで「誰でも、今すぐ、その場で背景透過を行える」という、アクセシビリティと手軽さを実現しています。</p>
+              <p>画像の読み込み、色の推定、透過処理、PNG生成はブラウザ内で行います。アプリの処理コードから画像を外部サーバーへ送信しないため、未公開のイラストを端末上で扱えます。</p>
+              <p>ページ表示ではWebフォントやアイコン用スクリプトを外部から読み込むため、初回表示にはインターネット接続が必要です。</p>
             </div>
           </div>
 
@@ -1100,15 +1098,13 @@
             <button class="accordion__trigger" aria-expanded="false" aria-controls="body-5-2">
               <div class="accordion__trigger-left">
                 <span class="accordion__tag accordion__tag--rationale">UX・パフォーマンス</span>
-                <span class="accordion__title">独立ツールとして機能を分散</span>
+                <span class="accordion__title">画像処理を別スレッドで実行</span>
               </div>
               <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="accordion__body" id="body-5-2">
-              <p>背景透過・画像分割・画像リサイズの3機能を1つにまとめず、あえて独立した専用ツールとして分散開発しました。これにより、以下の工夫を実現しています。</p>
-              <p><strong>1. 迷わせない操作性：</strong> 背景透過「だけ」したいユーザーが他の機能に迷わずに、開いてすぐに目的の作業を開始できるシンプルな画面構造にしました。</p>
-              <p><strong>2. 軽量・高速な読み込み：</strong> 使う機能のプログラムのみが読み込まれるため、余計なコード処理が発生せず、ページの起動や動作が軽量です。</p>
-              <p>クリエイターが、最短時間でストレスなく目的を達成することを目指した、効率優先の設計です。</p>
+              <p>対応ブラウザではWeb Worker（画面とは別の処理枠）で画像処理を行い、画面の操作を妨げにくくしています。利用できない場合は処理を小分けにして実行する代替経路に切り替えます。</p>
+              <p>色や画像が変更されたときは進行中の処理を停止し、古い結果が新しい画像に反映されないよう制御します。画像の一時URLも不要になった時点で解放します。</p>
             </div>
           </div>
 
@@ -1121,7 +1117,7 @@
               <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="accordion__body" id="body-5-3">
-              <p>画像処理を画面の操作と切り分け、対応ブラウザでは別スレッドで実行します。別スレッドが使えない場合も処理を小分けにして画面へ制御を戻し、色や画像を変更した際には古い処理を取り消せるようにしています。</p>
+              <p>背景色とのRGB色差を使って透過度をなめらかに計算し、緑系背景では緑かぶりを抑える補正を加えます。Workerが使えない環境にも、画面へ制御を返しながら処理するフォールバックを用意しています。</p>
             </div>
           </div>
 
@@ -1144,8 +1140,8 @@
               <div class="flow-step__line"></div>
             </div>
             <div class="flow-step__content">
-              <div class="flow-step__title">画像入力と過去URLの解放</div>
-              <div class="flow-step__desc">ドラッグ＆ドロップ等で画像を読み込むと同時に、前回のプレビュー用一時URLを破棄してブラウザのメモリ蓄積を防止</div>
+              <div class="flow-step__title">画像の読み込み</div>
+              <div class="flow-step__desc">ファイル選択またはドラッグ＆ドロップで読み込み、端末のブラウザ内に元画像を表示。前の画像の一時データは解放します。</div>
             </div>
           </div>
           <div class="flow-step">
@@ -1154,8 +1150,8 @@
               <div class="flow-step__line"></div>
             </div>
             <div class="flow-step__content">
-              <div class="flow-step__title">背景色の指定</div>
-              <div class="flow-step__desc">画像上をクリックするか、色の選択欄で消したい背景色を指定</div>
+              <div class="flow-step__title">背景色の推定・指定</div>
+              <div class="flow-step__desc">四隅の色から背景色を推定し、画像上のクリック、色選択欄、カラーコード入力で調整します。</div>
             </div>
           </div>
           <div class="flow-step">
@@ -1164,8 +1160,8 @@
               <div class="flow-step__line"></div>
             </div>
             <div class="flow-step__content">
-              <div class="flow-step__title">背景透過と輪郭補正</div>
-              <div class="flow-step__desc">指定色を透過し、輪郭に残る背景色を補正してプレビューを表示</div>
+              <div class="flow-step__title">透過処理と輪郭補正</div>
+              <div class="flow-step__desc">指定色との色差を計算し、境界をなめらかに透過。輪郭の背景色を周辺の元画像を参照して補正します。</div>
             </div>
           </div>
           <div class="flow-step">
@@ -1174,8 +1170,8 @@
               <div class="flow-step__line"></div>
             </div>
             <div class="flow-step__content">
-              <div class="flow-step__title">プレビューURLの生成と表示</div>
-              <div class="flow-step__desc">生成した画像データを画面に表示するための一時的なアクセスURLを発行し、プレビュー画面に表示</div>
+              <div class="flow-step__title">プレビューの確認</div>
+              <div class="flow-step__desc">透過結果を表示し、市松模様・白・黒の背景を切り替えて仕上がりを確認します。</div>
             </div>
           </div>
           <div class="flow-step">
@@ -1184,8 +1180,8 @@
               <div class="flow-step__line"></div>
             </div>
             <div class="flow-step__content">
-              <div class="flow-step__title">透過画像のダウンロード保存</div>
-              <div class="flow-step__desc">「保存する」ボタンが押された際に、ブラウザの自動ダウンロード機能を用いて透過PNG画像をユーザー端末に保存</div>
+              <div class="flow-step__title">透過PNGの保存</div>
+              <div class="flow-step__desc">PNGを生成して「元ファイル名_nobg.png」としてダウンロードします。</div>
             </div>
           </div>
         </div>

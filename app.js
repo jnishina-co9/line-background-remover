@@ -388,7 +388,7 @@ if (typeof document !== 'undefined') {
     uploadPreview.removeAttribute('src');
     if (previewUrl) URL.revokeObjectURL(previewUrl);
     previewUrl = null;
-    setColor('#00B900');
+    setColor('#00FF00');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
   if (window.lucide) window.lucide.createIcons();
