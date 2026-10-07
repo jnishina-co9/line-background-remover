@@ -56,3 +56,62 @@ input[type=text]{height:48px;width:128px;padding:0 16px;text-align:center}
 #save svg,#reset-top svg{width:24px;height:24px;flex-shrink:0}
 #reset-top[hidden]{display:none}
 @media(max-width:767px){#save,#reset-top{padding:18px 32px;font-size:16px}}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+main {
+  width: 100%;
+}
+
+/* ===== Notice Text (案内テキスト) ===== */
+.notice-box {
+  width: 100%;
+  padding: 8px 0;
+  text-align: center;
+}
+.notice-text {
+  font-size: 14px;
+  color: #00c9a7;
+  line-height: 1.8;
+  margin: 0;
+  text-align: center;
+}
+.notice-text span {
+  display: inline-block;
+}
+.notice-text a {
+  color: inherit;
+  text-underline-offset: 3px;
+}
+
+/* ===== Footer ===== */
+.site-footer,
+footer {
+  width: 100%;
+  background: #fff;
+  padding: 32px 0;
+  text-align: center;
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+.footer-copy {
+  font-family: "Outfit", "Noto Sans JP", sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  color: #00c9a7;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+@media(max-width:767px){
+  .notice-box { padding: 4px 0; }
+  .notice-text { font-size: 12px; }
+  .notice-text span { display: block; }
+}
+

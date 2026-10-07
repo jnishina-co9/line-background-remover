@@ -6,7 +6,7 @@
   <title>背景削除ツール</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Outfit:wght@300;400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="https://unpkg.com/lucide@latest" defer></script>
   <script src="app.js" defer></script>
@@ -43,7 +43,16 @@
       <button id="save" type="button" disabled><i data-lucide="download"></i> 透過PNGを保存</button>
       <button id="reset-top" type="button" hidden><i data-lucide="rotate-ccw"></i> リセットしてトップに戻る</button>
     </section>
+
+    <!-- フッター上の案内テキスト -->
+    <div class="notice-box">
+      <p class="notice-text"><span><a href="https://creator.line.me/ja/guideline/sticker/" target="_blank" rel="noopener noreferrer">LINE公式制作ガイドライン</a>に基づく仕様です。</span><span>審査通過を保証するものではありません。</span></p>
+    </div>
   </main>
-  <footer>© 2026 深森呼吸</footer>
+
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <p class="footer-copy">© 2026 深森呼吸</p>
+  </footer>
 </body>
 </html>
